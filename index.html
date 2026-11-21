@@ -14,16 +14,13 @@
   --bg:#f1f5f9;
   --text:#172b4d;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
 }
-
 header{
   background:linear-gradient(120deg,#142b4d,#28599b);
   color:white;
@@ -32,24 +29,20 @@ header{
   align-items:center;
   justify-content:space-between;
 }
-
 header h1{
   margin:0;
   font-size:22px;
   letter-spacing:2px;
 }
-
 header small{
   font-size:11px;
   opacity:.85;
 }
-
 main{
   max-width:1100px;
   margin:25px auto;
   padding:0 15px;
 }
-
 .panel{
   background:#fff;
   border:1px solid var(--border);
@@ -58,17 +51,14 @@ main{
   margin-bottom:16px;
   box-shadow:0 4px 15px #172b4d0c;
 }
-
 .panel h2{
   font-size:16px;
   margin:0 0 14px;
 }
-
 .search{
   display:flex;
   gap:10px;
 }
-
 input,textarea{
   width:100%;
   min-width:0;
@@ -79,13 +69,10 @@ input,textarea{
   font-family:Arial,sans-serif;
   outline:none;
 }
-
 input:focus,textarea:focus{
   border-color:var(--blue);
 }
-
 textarea{resize:vertical}
-
 button{
   border:0;
   border-radius:6px;
@@ -95,42 +82,35 @@ button{
   font-weight:bold;
   cursor:pointer;
 }
-
 button:disabled{opacity:.5}
-
 .status{
   margin-top:10px;
   font-size:13px;
   color:#64748b;
 }
-
 .manual-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:12px;
 }
-
 .manual-grid label{
   display:block;
   margin-bottom:6px;
   font-size:12px;
   font-weight:bold;
 }
-
 .actions{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
 }
 
-/* REPORT AREA */
-
+/* REPORT */
 #reportArea{
   display:none;
   overflow-x:auto;
   padding:10px 0 25px;
 }
-
 .report{
   width:9in;
   height:3in;
@@ -144,7 +124,6 @@ button:disabled{opacity:.5}
   font-family:Arial,Helvetica,sans-serif;
   font-size:8px;
 }
-
 .report-header{
   display:flex;
   justify-content:space-between;
@@ -152,45 +131,38 @@ button:disabled{opacity:.5}
   border-bottom:2px solid #172b4d;
   padding-bottom:4px;
 }
-
 .report-brand h2{
   font-size:18px;
   letter-spacing:2px;
   margin:0;
 }
-
 .report-brand p{
   font-size:7px;
   margin:2px 0 0;
 }
-
 .report-heading{
   text-align:right;
   font-size:10px;
   font-weight:bold;
 }
-
 .report-heading small{
   display:block;
   font-size:7px;
   font-weight:normal;
   margin-top:2px;
 }
-
 .top-info{
   display:grid;
   grid-template-columns:1.4fr 1fr 1.3fr 1fr 1fr 1.3fr .6fr;
   gap:5px;
   margin:5px 0;
 }
-
 .top-info-item{
   min-width:0;
   border:1px solid #999;
   padding:3px 4px;
   overflow:hidden;
 }
-
 .top-info-item label{
   display:block;
   font-size:6px;
@@ -199,13 +171,11 @@ button:disabled{opacity:.5}
   margin-bottom:2px;
   text-transform:uppercase;
 }
-
 .top-info-item strong{
   display:block;
   font-size:8px;
   overflow-wrap:anywhere;
 }
-
 .section-title{
   text-align:center;
   font-weight:bold;
@@ -213,19 +183,16 @@ button:disabled{opacity:.5}
   margin:5px 0 4px;
   letter-spacing:.5px;
 }
-
 .results-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:7px;
 }
-
 .result-table{
   width:100%;
   border-collapse:collapse;
   table-layout:fixed;
 }
-
 .result-table th,
 .result-table td{
   border:1px solid #777;
@@ -235,21 +202,17 @@ button:disabled{opacity:.5}
   line-height:1.1;
   overflow-wrap:anywhere;
 }
-
 .result-table th{
   background:#e8edf5;
   font-weight:bold;
 }
-
 .result-table td:first-child,
 .result-table th:first-child{
   text-align:left;
 }
-
 .result-table th:nth-child(1){width:46%}
 .result-table th:nth-child(2){width:24%}
 .result-table th:nth-child(3){width:30%}
-
 .quality-comments{
   border:1px solid #777;
   margin-top:5px;
@@ -258,113 +221,70 @@ button:disabled{opacity:.5}
   line-height:1.25;
   overflow-wrap:anywhere;
 }
-
 .quality-comments b{
   color:#172b4d;
 }
-
 .bottom-line{
   display:flex;
   justify-content:space-between;
   margin-top:4px;
   font-size:7px;
 }
-
 .pass{color:#087443}
 .fail{color:#b42318}
-
 @media(max-width:700px){
   .manual-grid{grid-template-columns:1fr}
   .search{flex-direction:column}
   .report{margin:0}
 }
 
-/* ===================================
-   PRINT POSITION & CUTTING FIX
-   Page: 4.5 x 1.5 inch
-   Report: 50% scale
-=================================== */
-
+/* PRINT: EXACT 50% SCALE */
 @page{
   size:4.5in 1.5in;
   margin:0;
 }
-
 @media print{
-
-  html,
-  body{
+  html,body{
     width:4.5in!important;
     height:1.5in!important;
-    min-width:4.5in!important;
-    min-height:1.5in!important;
     margin:0!important;
     padding:0!important;
-    overflow:visible!important;
+    overflow:hidden!important;
     background:white!important;
   }
-
   body *{
     visibility:hidden!important;
   }
-
   #reportArea,
   #reportArea *{
     visibility:visible!important;
   }
-
   #reportArea{
     display:block!important;
     position:absolute!important;
-
-    left:0.04in!important;
-    top:0.04in!important;
-
-    width:4.42in!important;
-    height:1.42in!important;
-
-    margin:0!important;
-    padding:0!important;
-
-    overflow:visible!important;
-  }
-
-  .report{
-    position:absolute!important;
-
     left:0!important;
     top:0!important;
-
-    width:8.84in!important;
-    height:2.84in!important;
-    min-height:2.84in!important;
-    max-height:2.84in!important;
-
+    width:4.5in!important;
+    height:1.5in!important;
     margin:0!important;
-    padding:.13in .18in!important;
-
-    border:1px solid #222!important;
-
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  .report{
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+    width:9in!important;
+    height:3in!important;
+    min-height:3in!important;
+    margin:0!important;
     transform:scale(.5)!important;
     transform-origin:top left!important;
-
+    border:1px solid #222!important;
     overflow:hidden!important;
-
     print-color-adjust:exact!important;
     -webkit-print-color-adjust:exact!important;
-
-    page-break-after:avoid!important;
-    break-after:avoid!important;
   }
-
-  .report-header{
-    border-bottom:2px solid #172b4d!important;
-  }
-
-  .result-table th{
-    background:#e8edf5!important;
-  }
-
 }
 </style>
 </head>
@@ -383,12 +303,10 @@ button:disabled{opacity:.5}
 
 <section class="panel">
   <h2>Batch Search</h2>
-
   <div class="search">
     <input id="batchInput" placeholder="Enter Batch Number">
     <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
   </div>
-
   <div class="status" id="status">
     Enter Batch Number to load laboratory test report.
   </div>
@@ -396,40 +314,30 @@ button:disabled{opacity:.5}
 
 <section class="panel" id="manualPanel" style="display:none">
   <h2>Manual Measurements</h2>
-
   <div class="manual-grid">
-
     <div>
       <label>Actual GSM</label>
       <input id="actualGSM" placeholder="Enter Actual GSM">
     </div>
-
     <div>
       <label>AVG GSM</label>
       <input id="avgGSM" placeholder="Enter AVG GSM">
     </div>
-
     <div>
       <label>Actual Dia</label>
       <input id="actualDia" placeholder="Enter Actual Dia">
     </div>
-
   </div>
 </section>
 
 <section class="panel" id="qualityPanel" style="display:none">
   <h2>Quality Comments</h2>
-
-  <textarea
-    id="qualityComments"
-    rows="3"
-    placeholder="Enter Quality Comments here..."
-  ></textarea>
+  <textarea id="qualityComments" rows="3"
+    placeholder="Enter Quality Comments here..."></textarea>
 </section>
 
 <section class="panel" id="actionPanel" style="display:none">
   <h2>Report Actions</h2>
-
   <div class="actions">
     <button onclick="updateReport()">UPDATE REPORT</button>
     <button onclick="window.print()">PRINT / SAVE PDF</button>
@@ -437,60 +345,48 @@ button:disabled{opacity:.5}
 </section>
 
 <div id="reportArea">
-
 <div class="report" id="report">
 
   <div class="report-header">
-
     <div class="report-brand">
       <h2>OYSHO</h2>
       <p>FABRIC LABORATORY QUALITY CONTROL</p>
     </div>
-
     <div class="report-heading">
       LABORATORY TEST RESULTS
       <small>FABRIC TEST REPORT</small>
     </div>
-
   </div>
 
   <div class="top-info">
-
     <div class="top-info-item">
       <label>Lab Ref.</label>
       <strong id="labRef">-</strong>
     </div>
-
     <div class="top-info-item">
       <label>Buyer</label>
       <strong id="buyer">-</strong>
     </div>
-
     <div class="top-info-item">
       <label>Batch</label>
       <strong id="batch">-</strong>
     </div>
-
     <div class="top-info-item">
       <label>Color</label>
       <strong id="color">-</strong>
     </div>
-
     <div class="top-info-item">
       <label>Result</label>
       <strong id="result">-</strong>
     </div>
-
     <div class="top-info-item">
       <label>Fail Parameter</label>
       <strong id="failParameter">-</strong>
     </div>
-
     <div class="top-info-item">
       <label>Roll No.</label>
       <strong id="rollNo">-</strong>
     </div>
-
   </div>
 
   <div class="section-title">LABORATORY TEST RESULTS</div>
@@ -498,7 +394,6 @@ button:disabled{opacity:.5}
   <div class="results-grid">
 
     <table class="result-table">
-
       <thead>
         <tr>
           <th>Test</th>
@@ -506,13 +401,10 @@ button:disabled{opacity:.5}
           <th>Requirement</th>
         </tr>
       </thead>
-
       <tbody id="leftTests"></tbody>
-
     </table>
 
     <table class="result-table">
-
       <thead>
         <tr>
           <th>Test</th>
@@ -520,9 +412,7 @@ button:disabled{opacity:.5}
           <th>Requirement</th>
         </tr>
       </thead>
-
       <tbody id="rightTests"></tbody>
-
     </table>
 
   </div>
@@ -533,17 +423,14 @@ button:disabled{opacity:.5}
   </div>
 
   <div class="bottom-line">
-
     <span>
       Customer Requirements:
       <b id="customerRequirements">-</b>
     </span>
-
     <span>
       Test Date:
       <b id="testDate">-</b>
     </span>
-
   </div>
 
 </div>
@@ -575,7 +462,11 @@ function esc(value){
   }[c]));
 }
 
-/* LEFT SIDE TESTS */
+/*
+  Requirements:
+  Fixed requirements are shown here.
+  Required GSM and Required Dia come directly from Google Sheet.
+*/
 
 const LEFT_TESTS=[
   {
@@ -624,8 +515,6 @@ const LEFT_TESTS=[
     requirement:"4.5 to 7.5"
   }
 ];
-
-/* RIGHT SIDE TESTS */
 
 const RIGHT_TESTS=[
   {
@@ -676,24 +565,22 @@ const RIGHT_TESTS=[
 ];
 
 function getTestResult(test){
+  const data=currentData;
 
   if(test.manual){
-    return $(""+test.manual).value.trim()||"-";
+    return $(test.manual).value.trim()||"-";
   }
 
   if(test.meta){
-    return clean(currentData.report[test.meta]);
+    return clean(data.report[test.meta]);
   }
 
-  return clean(currentData.tests[test.key]);
+  return clean(data.tests[test.key]);
 }
 
 function renderTable(list,target){
-
   $(target).innerHTML=list.map(test=>{
-
     const value=getTestResult(test);
-
     return `
       <tr>
         <td>${esc(test.name)}</td>
@@ -701,7 +588,6 @@ function renderTable(list,target){
         <td>${esc(test.requirement||"-")}</td>
       </tr>
     `;
-
   }).join("");
 }
 
@@ -715,7 +601,6 @@ async function searchBatch(){
   }
 
   $("searchBtn").disabled=true;
-
   $("status").textContent="Loading latest laboratory results...";
 
   try{
@@ -760,9 +645,7 @@ async function searchBatch(){
     $("reportArea").style.display="none";
 
   }finally{
-
     $("searchBtn").disabled=false;
-
   }
 }
 
@@ -780,7 +663,6 @@ function updateReport(){
   $("rollNo").textContent=clean(r["Roll No"]);
 
   const resultValue=clean(r["Pass/Fail"]);
-
   $("result").textContent=resultValue;
 
   $("result").className=
