@@ -34,10 +34,7 @@ header h1{
   font-size:22px;
   letter-spacing:2px;
 }
-header small{
-  font-size:11px;
-  opacity:.85;
-}
+header small{font-size:11px;opacity:.85}
 main{
   max-width:1100px;
   margin:25px auto;
@@ -51,14 +48,8 @@ main{
   margin-bottom:16px;
   box-shadow:0 4px 15px #172b4d0c;
 }
-.panel h2{
-  font-size:16px;
-  margin:0 0 14px;
-}
-.search{
-  display:flex;
-  gap:10px;
-}
+.panel h2{font-size:16px;margin:0 0 14px}
+.search{display:flex;gap:10px}
 input,textarea{
   width:100%;
   min-width:0;
@@ -69,9 +60,7 @@ input,textarea{
   font-family:Arial,sans-serif;
   outline:none;
 }
-input:focus,textarea:focus{
-  border-color:var(--blue);
-}
+input:focus,textarea:focus{border-color:var(--blue)}
 textarea{resize:vertical}
 button{
   border:0;
@@ -82,28 +71,80 @@ button{
   font-weight:bold;
   cursor:pointer;
 }
-button:disabled{opacity:.5}
-.status{
-  margin-top:10px;
+button:disabled{opacity:.5;cursor:not-allowed}
+.status{margin-top:10px;font-size:13px;color:#64748b}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* POPUP FORM */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(10,25,48,.65);
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+.modal.show{display:flex}
+.modal-box{
+  background:#fff;
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:13px;
+  box-shadow:0 20px 60px #0004;
+}
+.modal-header{
+  background:linear-gradient(120deg,#142b4d,#28599b);
+  color:white;
+  padding:17px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+.modal-header h2{margin:0;font-size:17px}
+.close-btn{
+  background:#ffffff20;
+  padding:6px 12px;
+  font-size:20px;
+}
+.modal-body{padding:20px}
+.modal-batch{
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  border-radius:8px;
+  padding:12px;
+  margin-bottom:18px;
   font-size:13px;
-  color:#64748b;
 }
-.manual-grid{
+.modal-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
 }
-.manual-grid label{
+.modal-field label{
   display:block;
-  margin-bottom:6px;
   font-size:12px;
   font-weight:bold;
+  margin-bottom:6px;
 }
-.actions{
+.modal-field textarea{min-height:85px}
+.modal-actions{
   display:flex;
   gap:10px;
+  justify-content:flex-end;
   flex-wrap:wrap;
+  margin-top:20px;
+  padding-top:15px;
+  border-top:1px solid #e2e8f0;
 }
+.btn-gray{background:#64748b}
+.btn-green{background:#087443}
 
 /* REPORT */
 #reportArea{
@@ -136,15 +177,8 @@ button:disabled{opacity:.5}
   letter-spacing:2px;
   margin:0;
 }
-.report-brand p{
-  font-size:7px;
-  margin:2px 0 0;
-}
-.report-heading{
-  text-align:right;
-  font-size:10px;
-  font-weight:bold;
-}
+.report-brand p{font-size:7px;margin:2px 0 0}
+.report-heading{text-align:right;font-size:10px;font-weight:bold}
 .report-heading small{
   display:block;
   font-size:7px;
@@ -188,13 +222,8 @@ button:disabled{opacity:.5}
   grid-template-columns:1fr 1fr;
   gap:7px;
 }
-.result-table{
-  width:100%;
-  border-collapse:collapse;
-  table-layout:fixed;
-}
-.result-table th,
-.result-table td{
+.result-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.result-table th,.result-table td{
   border:1px solid #777;
   padding:3px 4px;
   text-align:center;
@@ -202,14 +231,8 @@ button:disabled{opacity:.5}
   line-height:1.1;
   overflow-wrap:anywhere;
 }
-.result-table th{
-  background:#e8edf5;
-  font-weight:bold;
-}
-.result-table td:first-child,
-.result-table th:first-child{
-  text-align:left;
-}
+.result-table th{background:#e8edf5;font-weight:bold}
+.result-table td:first-child,.result-table th:first-child{text-align:left}
 .result-table th:nth-child(1){width:46%}
 .result-table th:nth-child(2){width:24%}
 .result-table th:nth-child(3){width:30%}
@@ -221,9 +244,7 @@ button:disabled{opacity:.5}
   line-height:1.25;
   overflow-wrap:anywhere;
 }
-.quality-comments b{
-  color:#172b4d;
-}
+.quality-comments b{color:#172b4d}
 .bottom-line{
   display:flex;
   justify-content:space-between;
@@ -232,38 +253,34 @@ button:disabled{opacity:.5}
 }
 .pass{color:#087443}
 .fail{color:#b42318}
+
 @media(max-width:700px){
-  .manual-grid{grid-template-columns:1fr}
   .search{flex-direction:column}
+  .modal-grid{grid-template-columns:1fr}
   .report{margin:0}
 }
 
-/* PRINT: EXACT 50% SCALE */
+/* PRINT: EXACT 5 x 2 INCH */
 @page{
-  size:4.5in 1.5in;
+  size:5in 2in;
   margin:0;
 }
 @media print{
   html,body{
-    width:4.5in!important;
-    height:1.5in!important;
+    width:5in!important;
+    height:2in!important;
     margin:0!important;
     padding:0!important;
     overflow:hidden!important;
     background:white!important;
   }
-  body *{
-    visibility:hidden!important;
-  }
-  #reportArea,
-  #reportArea *{
-    visibility:visible!important;
-  }
+  body *{visibility:hidden!important}
+  #reportArea,#reportArea *{visibility:visible!important}
   #reportArea{
     display:block!important;
     position:absolute!important;
-    left:0!important;
-    top:0!important;
+    left:.25in!important;
+    top:.25in!important;
     width:4.5in!important;
     height:1.5in!important;
     margin:0!important;
@@ -308,42 +325,71 @@ button:disabled{opacity:.5}
     <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
   </div>
   <div class="status" id="status">
-    Enter Batch Number to load laboratory test report.
+    Enter Batch Number and press ENTER to open the report form.
   </div>
-</section>
-
-<section class="panel" id="manualPanel" style="display:none">
-  <h2>Manual Measurements</h2>
-  <div class="manual-grid">
-    <div>
-      <label>Actual GSM</label>
-      <input id="actualGSM" placeholder="Enter Actual GSM">
-    </div>
-    <div>
-      <label>AVG GSM</label>
-      <input id="avgGSM" placeholder="Enter AVG GSM">
-    </div>
-    <div>
-      <label>Actual Dia</label>
-      <input id="actualDia" placeholder="Enter Actual Dia">
-    </div>
-  </div>
-</section>
-
-<section class="panel" id="qualityPanel" style="display:none">
-  <h2>Quality Comments</h2>
-  <textarea id="qualityComments" rows="3"
-    placeholder="Enter Quality Comments here..."></textarea>
 </section>
 
 <section class="panel" id="actionPanel" style="display:none">
   <h2>Report Actions</h2>
   <div class="actions">
-    <button onclick="updateReport()">UPDATE REPORT</button>
-    <button onclick="window.print()">PRINT / SAVE PDF</button>
+    <button onclick="openForm()">EDIT MANUAL INPUT</button>
+    <button class="btn-green" onclick="window.print()">PRINT / SAVE PDF</button>
   </div>
 </section>
 
+<!-- POPUP FORM -->
+<div class="modal" id="inputModal">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <h2>Laboratory Report Input Form</h2>
+      <button class="close-btn" onclick="closeForm()">×</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="modal-batch">
+        <strong>Batch Number:</strong>
+        <span id="popupBatch">-</span>
+        <br>
+        <span id="popupBuyer"></span>
+      </div>
+
+      <div class="modal-grid">
+
+        <div class="modal-field">
+          <label>Actual GSM</label>
+          <input id="actualGSM" placeholder="Enter Actual GSM">
+        </div>
+
+        <div class="modal-field">
+          <label>AVG GSM</label>
+          <input id="avgGSM" placeholder="Enter AVG GSM">
+        </div>
+
+        <div class="modal-field">
+          <label>Actual Dia</label>
+          <input id="actualDia" placeholder="Enter Actual Dia">
+        </div>
+
+        <div class="modal-field">
+          <label>Quality Comments</label>
+          <textarea id="qualityComments"
+            placeholder="Enter Quality Comments here..."></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-gray" onclick="closeForm()">CANCEL</button>
+        <button onclick="saveManualInput()">UPDATE REPORT</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
 <div id="reportArea">
 <div class="report" id="report">
 
@@ -392,7 +438,6 @@ button:disabled{opacity:.5}
   <div class="section-title">LABORATORY TEST RESULTS</div>
 
   <div class="results-grid">
-
     <table class="result-table">
       <thead>
         <tr>
@@ -414,7 +459,6 @@ button:disabled{opacity:.5}
       </thead>
       <tbody id="rightTests"></tbody>
     </table>
-
   </div>
 
   <div class="quality-comments">
@@ -462,106 +506,28 @@ function esc(value){
   }[c]));
 }
 
-/*
-  Requirements:
-  Fixed requirements are shown here.
-  Required GSM and Required Dia come directly from Google Sheet.
-*/
-
 const LEFT_TESTS=[
-  {
-    name:"C/F to washing",
-    key:"C/F to washing",
-    requirement:"3-4"
-  },
-  {
-    name:"C/F to water",
-    key:"C/F to water",
-    requirement:"3"
-  },
-  {
-    name:"CF To Dry Rub",
-    key:"CF To Dry Rub",
-    requirement:"3"
-  },
-  {
-    name:"CF To Wet Rub",
-    key:"CF To Wet Rub",
-    requirement:"3"
-  },
-  {
-    name:"CF to Per.(Acid)",
-    key:"CF to Perspiration (Acid)",
-    requirement:"3"
-  },
-  {
-    name:"CF to Per.(Alkali)",
-    key:"CF to Perspiration (Alkali)",
-    requirement:"3"
-  },
-  {
-    name:"Pilling (ICI - ISO 12945-1)",
-    key:"Pilling",
-    requirement:"3-4"
-  },
-  {
-    name:"Bursting strength",
-    key:"Bursting strength",
-    requirement:"250"
-  },
-  {
-    name:"pH",
-    key:"pH",
-    requirement:"4.5 to 7.5"
-  }
+  {name:"C/F to washing",key:"C/F to washing",requirement:"3-4"},
+  {name:"C/F to water",key:"C/F to water",requirement:"3"},
+  {name:"CF To Dry Rub",key:"CF To Dry Rub",requirement:"3"},
+  {name:"CF To Wet Rub",key:"CF To Wet Rub",requirement:"3"},
+  {name:"CF to Per.(Acid)",key:"CF to Perspiration (Acid)",requirement:"3"},
+  {name:"CF to Per.(Alkali)",key:"CF to Perspiration (Alkali)",requirement:"3"},
+  {name:"Pilling (ICI - ISO 12945-1)",key:"Pilling",requirement:"3-4"},
+  {name:"Bursting strength",key:"Bursting strength",requirement:"250"},
+  {name:"pH",key:"pH",requirement:"4.5 to 7.5"}
 ];
 
 const RIGHT_TESTS=[
-  {
-    name:"DS Length",
-    key:"DS Length",
-    requirement:"+0.0% to -3.0%"
-  },
-  {
-    name:"DS Width",
-    key:"DS Width",
-    requirement:"+0.0% to -3.0%"
-  },
-  {
-    name:"SP",
-    key:"SP",
-    requirement:"3"
-  },
-  {
-    name:"Required GSM",
-    meta:"Required GSM",
-    requirement:"+/-10.0 grs/m2"
-  },
-  {
-    name:"Actual GSM",
-    manual:"actualGSM",
-    requirement:""
-  },
-  {
-    name:"AVG GSM",
-    manual:"avgGSM",
-    requirement:""
-  },
-  {
-    name:"Required Dia",
-    meta:"Required Dia",
-    requirement:"(+/-3.0%)"
-  },
-  {
-    name:"Actual Dia",
-    manual:"actualDia",
-    requirement:""
-  },
-  {
-    name:"Recovery",
-    key:"Recovery",
-    requirement:"-"
-  }
+  {name:"DS Length",key:"DS Length",requirement:"+0.0% to -3.0%"},
+  {name:"DS Width",key:"DS Width",requirement:"+0.0% to -3.0%"},
+  {name:"SP",key:"SP",requirement:"3"},
+  {name:"Required GSM",meta:"Required GSM",requirement:"+/-10.0 grs/m2"},
+  {name:"Actual GSM",manual:"actualGSM",requirement:""},
+  {name:"AVG GSM",manual:"avgGSM",requirement:""},
+  {name:"Required Dia",meta:"Required Dia",requirement:"(+/-3.0%)"},
+  {name:"Actual Dia",manual:"actualDia",requirement:""},
+  {name:"Recovery",key:"Recovery",requirement:"-"}
 ];
 
 function getTestResult(test){
@@ -597,6 +563,7 @@ async function searchBatch(){
 
   if(!batchNumber){
     $("status").textContent="Please enter Batch Number.";
+    $("batchInput").focus();
     return;
   }
 
@@ -616,37 +583,64 @@ async function searchBatch(){
       throw new Error(data.message||"Batch not found.");
     }
 
+    if(!data.report || !data.tests){
+      throw new Error("Invalid report data received from API.");
+    }
+
     currentData=data;
 
-    $("manualPanel").style.display="block";
-    $("qualityPanel").style.display="block";
-    $("actionPanel").style.display="block";
-    $("reportArea").style.display="block";
-
+    // Reset manual fields for the new batch
     $("actualGSM").value="";
     $("avgGSM").value="";
     $("actualDia").value="";
     $("qualityComments").value="";
+
+    $("popupBatch").textContent=clean(data.report["Batch No"]);
+    $("popupBuyer").textContent="Buyer: "+clean(data.report["Buyer"]);
+
+    $("actionPanel").style.display="block";
+    $("reportArea").style.display="block";
 
     updateReport();
 
     $("status").textContent=
       "Report loaded successfully. Records found: "+data.recordsFound;
 
+    // Open popup automatically after Enter / Search
+    openForm();
+
   }catch(error){
 
     $("status").textContent="Error: "+error.message;
 
     currentData=null;
-
-    $("manualPanel").style.display="none";
-    $("qualityPanel").style.display="none";
     $("actionPanel").style.display="none";
     $("reportArea").style.display="none";
+    closeForm();
 
   }finally{
     $("searchBtn").disabled=false;
   }
+}
+
+function openForm(){
+  if(!currentData)return;
+  $("inputModal").classList.add("show");
+}
+
+function closeForm(){
+  $("inputModal").classList.remove("show");
+}
+
+function saveManualInput(){
+
+  if(!currentData)return;
+
+  updateReport();
+  closeForm();
+
+  $("status").textContent=
+    "Manual input updated successfully. Report is ready to print.";
 }
 
 function updateReport(){
@@ -682,17 +676,26 @@ function updateReport(){
     clean(r["In Date & Time"]);
 }
 
-[
-  "actualGSM",
-  "avgGSM",
-  "actualDia",
-  "qualityComments"
-].forEach(id=>{
-  $(id).addEventListener("input",updateReport);
+// Press Enter to search batch
+$("batchInput").addEventListener("keydown",event=>{
+  if(event.key==="Enter"){
+    event.preventDefault();
+    searchBatch();
+  }
 });
 
-$("batchInput").addEventListener("keydown",event=>{
-  if(event.key==="Enter")searchBatch();
+// Close popup by clicking outside
+$("inputModal").addEventListener("click",event=>{
+  if(event.target===$("inputModal")){
+    closeForm();
+  }
+});
+
+// Escape key closes popup
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    closeForm();
+  }
 });
 </script>
 
