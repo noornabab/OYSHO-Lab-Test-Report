@@ -123,7 +123,7 @@ button:disabled{opacity:.5}
   flex-wrap:wrap;
 }
 
-/* REPORT AREA */
+/* REPORT */
 
 #reportArea{
   display:none;
@@ -279,28 +279,26 @@ button:disabled{opacity:.5}
   .report{margin:0}
 }
 
-/* ===================================
-   PRINT POSITION & CUTTING FIX
-   Page: 4.5 x 1.5 inch
-   Report: 50% scale
-=================================== */
+/* ==================================
+   PRINT SETTINGS
+   FINAL PAPER SIZE: 5 x 2 INCH
+================================== */
 
 @page{
-  size:4.5in 2.0in;
+  size:5in 2in;
   margin:0;
 }
 
 @media print{
 
-  html,
-  body{
-    width:4.5in!important;
-    height:2.0in!important;
-    min-width:4.5in!important;
-    min-height:2.0in!important;
+  html,body{
+    width:5in!important;
+    height:2in!important;
+    min-width:5in!important;
+    min-height:2in!important;
     margin:0!important;
     padding:0!important;
-    overflow:visible!important;
+    overflow:hidden!important;
     background:white!important;
   }
 
@@ -316,29 +314,24 @@ button:disabled{opacity:.5}
   #reportArea{
     display:block!important;
     position:absolute!important;
-
-    left:0.04in!important;
-    top:0.04in!important;
-
-    width:4.42in!important;
-    height:1.42in!important;
-
+    left:.05in!important;
+    top:.05in!important;
+    width:4.9in!important;
+    height:1.9in!important;
     margin:0!important;
     padding:0!important;
-
-    overflow:visible!important;
+    overflow:hidden!important;
   }
 
   .report{
     position:absolute!important;
-
     left:0!important;
     top:0!important;
 
-    width:8.84in!important;
-    height:2.84in!important;
-    min-height:2.84in!important;
-    max-height:2.84in!important;
+    width:9.8in!important;
+    height:3.8in!important;
+    min-height:3.8in!important;
+    max-height:3.8in!important;
 
     margin:0!important;
     padding:.13in .18in!important;
@@ -364,7 +357,6 @@ button:disabled{opacity:.5}
   .result-table th{
     background:#e8edf5!important;
   }
-
 }
 </style>
 </head>
@@ -498,7 +490,6 @@ button:disabled{opacity:.5}
   <div class="results-grid">
 
     <table class="result-table">
-
       <thead>
         <tr>
           <th>Test</th>
@@ -506,13 +497,10 @@ button:disabled{opacity:.5}
           <th>Requirement</th>
         </tr>
       </thead>
-
       <tbody id="leftTests"></tbody>
-
     </table>
 
     <table class="result-table">
-
       <thead>
         <tr>
           <th>Test</th>
@@ -520,9 +508,7 @@ button:disabled{opacity:.5}
           <th>Requirement</th>
         </tr>
       </thead>
-
       <tbody id="rightTests"></tbody>
-
     </table>
 
   </div>
@@ -533,7 +519,6 @@ button:disabled{opacity:.5}
   </div>
 
   <div class="bottom-line">
-
     <span>
       Customer Requirements:
       <b id="customerRequirements">-</b>
@@ -543,7 +528,6 @@ button:disabled{opacity:.5}
       Test Date:
       <b id="testDate">-</b>
     </span>
-
   </div>
 
 </div>
@@ -575,110 +559,38 @@ function esc(value){
   }[c]));
 }
 
-/* LEFT SIDE TESTS */
+/* LEFT SIDE REQUIREMENTS */
 
 const LEFT_TESTS=[
-  {
-    name:"C/F to washing",
-    key:"C/F to washing",
-    requirement:"3-4"
-  },
-  {
-    name:"C/F to water",
-    key:"C/F to water",
-    requirement:"3"
-  },
-  {
-    name:"CF To Dry Rub",
-    key:"CF To Dry Rub",
-    requirement:"3"
-  },
-  {
-    name:"CF To Wet Rub",
-    key:"CF To Wet Rub",
-    requirement:"3"
-  },
-  {
-    name:"CF to Per.(Acid)",
-    key:"CF to Perspiration (Acid)",
-    requirement:"3"
-  },
-  {
-    name:"CF to Per.(Alkali)",
-    key:"CF to Perspiration (Alkali)",
-    requirement:"3"
-  },
-  {
-    name:"Pilling (ICI - ISO 12945-1)",
-    key:"Pilling",
-    requirement:"3-4"
-  },
-  {
-    name:"Bursting strength",
-    key:"Bursting strength",
-    requirement:"250"
-  },
-  {
-    name:"pH",
-    key:"pH",
-    requirement:"4.5 to 7.5"
-  }
+  {name:"C/F to washing",key:"C/F to washing",requirement:"3-4"},
+  {name:"C/F to water",key:"C/F to water",requirement:"3"},
+  {name:"CF To Dry Rub",key:"CF To Dry Rub",requirement:"3"},
+  {name:"CF To Wet Rub",key:"CF To Wet Rub",requirement:"3"},
+  {name:"CF to Per.(Acid)",key:"CF to Perspiration (Acid)",requirement:"3"},
+  {name:"CF to Per.(Alkali)",key:"CF to Perspiration (Alkali)",requirement:"3"},
+  {name:"Pilling (ICI - ISO 12945-1)",key:"Pilling",requirement:"3-4"},
+  {name:"Bursting strength",key:"Bursting strength",requirement:"250"},
+  {name:"pH",key:"pH",requirement:"4.5 to 7.5"}
 ];
 
-/* RIGHT SIDE TESTS */
+/* RIGHT SIDE REQUIREMENTS */
 
 const RIGHT_TESTS=[
-  {
-    name:"DS Length",
-    key:"DS Length",
-    requirement:"+0.0% to -3.0%"
-  },
-  {
-    name:"DS Width",
-    key:"DS Width",
-    requirement:"+0.0% to -3.0%"
-  },
-  {
-    name:"SP",
-    key:"SP",
-    requirement:"3"
-  },
-  {
-    name:"Required GSM",
-    meta:"Required GSM",
-    requirement:"+/-10.0 grs/m2"
-  },
-  {
-    name:"Actual GSM",
-    manual:"actualGSM",
-    requirement:""
-  },
-  {
-    name:"AVG GSM",
-    manual:"avgGSM",
-    requirement:""
-  },
-  {
-    name:"Required Dia",
-    meta:"Required Dia",
-    requirement:"(+/-3.0%)"
-  },
-  {
-    name:"Actual Dia",
-    manual:"actualDia",
-    requirement:""
-  },
-  {
-    name:"Recovery",
-    key:"Recovery",
-    requirement:"-"
-  }
+  {name:"DS Length",key:"DS Length",requirement:"+0.0% to -3.0%"},
+  {name:"DS Width",key:"DS Width",requirement:"Running"},
+  {name:"SP",key:"SP",requirement:"3"},
+  {name:"Required GSM",meta:"Required GSM",requirement:""},
+  {name:"Actual GSM",manual:"actualGSM",requirement:"+/-10.0 grs/m2"},
+  {name:"AVG GSM",manual:"avgGSM",requirement:""},
+  {name:"Required Dia",meta:"Required Dia",requirement:""},
+  {name:"Actual Dia",manual:"actualDia",requirement:"(+/-3.0%)"},
+  {name:"Recovery",key:"Recovery",requirement:"Running"}
 ];
 
 function getTestResult(test){
 
   if(test.manual){
-    return $(""+test.manual).value.trim()||"-";
+    return $(test.manual).value.trim()||"-";
   }
 
   if(test.meta){
@@ -715,7 +627,6 @@ async function searchBatch(){
   }
 
   $("searchBtn").disabled=true;
-
   $("status").textContent="Loading latest laboratory results...";
 
   try{
