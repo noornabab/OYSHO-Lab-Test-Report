@@ -45,7 +45,7 @@ main{max-width:1050px;margin:25px auto;padding:0 15px}
   display:flex;
   gap:10px;
 }
-input{
+input,textarea{
   min-width:0;
   width:100%;
   border:1px solid #cbd5e1;
@@ -53,8 +53,10 @@ input{
   padding:12px;
   font-size:14px;
   outline:none;
+  font-family:Arial,Helvetica,sans-serif;
 }
-input:focus{border-color:var(--blue)}
+input:focus,textarea:focus{border-color:var(--blue)}
+textarea{resize:vertical}
 button{
   border:0;
   border-radius:7px;
@@ -138,29 +140,54 @@ button:disabled{opacity:.5}
   font-weight:bold;
 }
 .report td:first-child,.report th:first-child{text-align:left}
+
+.quality-comments{
+  margin-top:6px;
+  border:1px solid #777;
+  padding:4px 6px;
+  min-height:24px;
+  font-size:8px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.quality-comments b{color:#172b4d}
+
 .report-footer{
   display:flex;
   justify-content:space-between;
-  margin-top:8px;
+  gap:8px;
+  margin-top:6px;
   font-size:8px;
 }
+.report-footer>div{min-width:0}
 .result{
   font-weight:bold;
   font-size:11px;
+  white-space:nowrap;
 }
 .pass{color:#087443}
 .fail{color:#b42318}
+
 @media(max-width:700px){
   .manual-grid{grid-template-columns:1fr}
   .search{flex-direction:column}
-  .report{transform-origin:top left}
+  .report{
+    transform-origin:top left;
+    width:9in;
+  }
 }
 @page{
   size:9in 3in;
   margin:0;
 }
 @media print{
-  body{background:white}
+  html,body{
+    width:9in;
+    height:3in;
+    margin:0!important;
+    padding:0!important;
+    background:white;
+  }
   body *{visibility:hidden}
   #reportArea,#reportArea *{visibility:visible}
   #reportArea{
@@ -169,13 +196,21 @@ button:disabled{opacity:.5}
     left:0;
     top:0;
     width:9in;
+    height:3in;
+    margin:0;
+    padding:0;
   }
   .report{
     margin:0;
     border:0;
     width:9in;
+    height:3in;
     min-height:3in;
+    max-height:3in;
+    padding:.13in .20in;
+    overflow:hidden;
     page-break-after:avoid;
+    break-after:avoid;
   }
 }
 </style>
@@ -199,7 +234,9 @@ button:disabled{opacity:.5}
     <input id="batchInput" placeholder="Enter Batch Number">
     <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
   </div>
-  <div class="status" id="status">Enter Batch Number to load laboratory results.</div>
+  <div class="status" id="status">
+    Enter Batch Number to load laboratory results.
+  </div>
 </section>
 
 <section class="panel" id="manualPanel" style="display:none">
@@ -218,6 +255,16 @@ button:disabled{opacity:.5}
       <input id="actualDia" placeholder="Enter Actual Dia">
     </div>
   </div>
+</section>
+
+<!-- QUALITY COMMENTS MANUAL INPUT -->
+<section class="panel" id="qualityPanel" style="display:none">
+  <h2>Quality Comments</h2>
+  <textarea
+    id="qualityComments"
+    rows="3"
+    placeholder="Enter Quality Comments here..."
+  ></textarea>
 </section>
 
 <section class="panel" id="actionPanel" style="display:none">
@@ -258,9 +305,21 @@ button:disabled{opacity:.5}
       <tbody id="testBody"></tbody>
     </table>
 
+    <!-- QUALITY COMMENTS IN PRINT REPORT -->
+    <div class="quality-comments">
+      <b>QUALITY COMMENTS:</b>
+      <span id="reportQualityComments">-</span>
+    </div>
+
     <div class="report-footer">
-      <div>Remarks / Customer Requirements: <b id="remarks"></b></div>
-      <div>FAIL PARAMETER: <b id="failParam"></b></div>
+      <div>
+        Remarks / Customer Requirements:
+        <b id="remarks"></b>
+      </div>
+      <div>
+        FAIL PARAMETER:
+        <b id="failParam"></b>
+      </div>
       <div class="result" id="finalResult"></div>
     </div>
 
@@ -278,12 +337,16 @@ const $ = id => document.getElementById(id);
 
 function esc(value){
   return String(value ?? "").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   }[c]));
 }
 
 async function searchBatch(){
+
   const batch = $("batchInput").value.trim();
 
   if(!batch){
@@ -295,6 +358,7 @@ async function searchBatch(){
   $("status").textContent="Searching Google Sheet...";
 
   try{
+
     const response=await fetch(
       API+"?batch="+encodeURIComponent(batch),
       {cache:"no-store"}
@@ -309,12 +373,14 @@ async function searchBatch(){
     currentData=data;
 
     $("manualPanel").style.display="block";
+    $("qualityPanel").style.display="block";
     $("actionPanel").style.display="block";
     $("reportArea").style.display="block";
 
     $("actualGSM").value="";
     $("avgGSM").value="";
     $("actualDia").value="";
+    $("qualityComments").value="";
 
     updateReport();
 
@@ -322,17 +388,23 @@ async function searchBatch(){
       "Report loaded successfully. Records found: "+data.recordsFound;
 
   }catch(error){
+
     $("status").textContent="Error: "+error.message;
+
     currentData=null;
+
     $("manualPanel").style.display="none";
+    $("qualityPanel").style.display="none";
     $("actionPanel").style.display="none";
     $("reportArea").style.display="none";
+
   }finally{
     $("searchBtn").disabled=false;
   }
 }
 
 function updateReport(){
+
   if(!currentData)return;
 
   const r=currentData.report;
@@ -386,6 +458,7 @@ function updateReport(){
   let html="";
 
   for(let i=0;i<rows.length;i+=2){
+
     const a=rows[i];
     const b=rows[i+1]||["",""];
 
@@ -400,16 +473,25 @@ function updateReport(){
 
   $("testBody").innerHTML=html;
 
-  $("remarks").textContent=r["Customer Requirements"]||"-";
-  $("failParam").textContent=r["Fail Parameter"]||"-";
+  $("remarks").textContent=
+    r["Customer Requirements"]||"-";
+
+  $("failParam").textContent=
+    r["Fail Parameter"]||"-";
+
+  // MANUAL QUALITY COMMENTS
+  $("reportQualityComments").textContent=
+    $("qualityComments").value.trim()||"-";
 
   const result=String(r["Pass/Fail"]||"").toUpperCase();
+
   $("finalResult").textContent=result;
+
   $("finalResult").className="result "+
     (result==="PASS"?"pass":result==="FAIL"?"fail":"");
 }
 
-["actualGSM","avgGSM","actualDia"].forEach(id=>{
+["actualGSM","avgGSM","actualDia","qualityComments"].forEach(id=>{
   $(id).addEventListener("input",updateReport);
 });
 
