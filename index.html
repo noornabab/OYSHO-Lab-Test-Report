@@ -1,0 +1,422 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OYSHO | Fabric Lab Report</title>
+
+<style>
+:root{
+  --navy:#172b4d;
+  --blue:#2457a6;
+  --light:#f3f6fb;
+  --border:#d9e0eb;
+  --text:#263449;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#eef2f7;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+}
+header{
+  background:linear-gradient(120deg,#142b4d,#28599b);
+  color:white;
+  padding:19px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1{font-size:20px;margin:0;letter-spacing:1px}
+header small{opacity:.8}
+main{max-width:1050px;margin:25px auto;padding:0 15px}
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 5px 20px #172b4d0b;
+}
+.panel h2{font-size:16px;margin:0 0 15px}
+.search{
+  display:flex;
+  gap:10px;
+}
+input{
+  min-width:0;
+  width:100%;
+  border:1px solid #cbd5e1;
+  border-radius:7px;
+  padding:12px;
+  font-size:14px;
+  outline:none;
+}
+input:focus{border-color:var(--blue)}
+button{
+  border:0;
+  border-radius:7px;
+  padding:11px 20px;
+  background:var(--blue);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:disabled{opacity:.5}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.status{font-size:13px;margin-top:12px;color:#64748b}
+.manual-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.manual-grid label{
+  font-size:12px;
+  font-weight:bold;
+  display:block;
+  margin-bottom:6px;
+}
+#reportArea{display:none}
+.report{
+  width:9in;
+  min-height:3in;
+  margin:20px auto;
+  background:white;
+  padding:.16in .22in;
+  border:1px solid #222;
+  color:#111;
+  font-family:Arial,sans-serif;
+  font-size:8px;
+}
+.report-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid #172b4d;
+  padding-bottom:5px;
+}
+.report-head h2{
+  font-size:16px;
+  letter-spacing:1.5px;
+  margin:0;
+}
+.report-head p{font-size:8px;margin:3px 0}
+.report-title{
+  text-align:center;
+  font-size:10px;
+  font-weight:bold;
+  margin:6px 0;
+}
+.info{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:3px 12px;
+  margin-bottom:6px;
+}
+.info div{
+  border-bottom:1px solid #ddd;
+  padding:3px 0;
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.info b{color:#263449}
+.report table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+.report th,.report td{
+  border:1px solid #777;
+  padding:3px 4px;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+.report th{
+  background:#e8edf5;
+  font-weight:bold;
+}
+.report td:first-child,.report th:first-child{text-align:left}
+.report-footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+  font-size:8px;
+}
+.result{
+  font-weight:bold;
+  font-size:11px;
+}
+.pass{color:#087443}
+.fail{color:#b42318}
+@media(max-width:700px){
+  .manual-grid{grid-template-columns:1fr}
+  .search{flex-direction:column}
+  .report{transform-origin:top left}
+}
+@page{
+  size:9in 3in;
+  margin:0;
+}
+@media print{
+  body{background:white}
+  body *{visibility:hidden}
+  #reportArea,#reportArea *{visibility:visible}
+  #reportArea{
+    display:block!important;
+    position:absolute;
+    left:0;
+    top:0;
+    width:9in;
+  }
+  .report{
+    margin:0;
+    border:0;
+    width:9in;
+    min-height:3in;
+    page-break-after:avoid;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h1>OYSHO</h1>
+    <small>FABRIC LABORATORY | QUALITY CONTROL</small>
+  </div>
+  <small>LAB REPORT SYSTEM</small>
+</header>
+
+<main>
+
+<section class="panel">
+  <h2>Batch Search</h2>
+  <div class="search">
+    <input id="batchInput" placeholder="Enter Batch Number">
+    <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
+  </div>
+  <div class="status" id="status">Enter Batch Number to load laboratory results.</div>
+</section>
+
+<section class="panel" id="manualPanel" style="display:none">
+  <h2>Manual Measurements</h2>
+  <div class="manual-grid">
+    <div>
+      <label>Actual GSM</label>
+      <input id="actualGSM" placeholder="Enter Actual GSM">
+    </div>
+    <div>
+      <label>AVG GSM</label>
+      <input id="avgGSM" placeholder="Enter AVG GSM">
+    </div>
+    <div>
+      <label>Actual Dia</label>
+      <input id="actualDia" placeholder="Enter Actual Dia">
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="actionPanel" style="display:none">
+  <h2>Report Actions</h2>
+  <div class="actions">
+    <button onclick="updateReport()">UPDATE REPORT</button>
+    <button onclick="window.print()">PRINT / SAVE PDF</button>
+  </div>
+</section>
+
+<div id="reportArea">
+  <div class="report" id="report">
+
+    <div class="report-head">
+      <div>
+        <h2>OYSHO</h2>
+        <p>FABRIC LABORATORY TEST REPORT</p>
+      </div>
+      <div style="text-align:right">
+        <b>QUALITY CONTROL DEPARTMENT</b>
+        <p>LABORATORY TEST RESULT</p>
+      </div>
+    </div>
+
+    <div class="report-title">FABRIC TEST REPORT</div>
+
+    <div class="info" id="info"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width:31%">TEST PARAMETER</th>
+          <th>RESULT</th>
+          <th style="width:31%">TEST PARAMETER</th>
+          <th>RESULT</th>
+        </tr>
+      </thead>
+      <tbody id="testBody"></tbody>
+    </table>
+
+    <div class="report-footer">
+      <div>Remarks / Customer Requirements: <b id="remarks"></b></div>
+      <div>FAIL PARAMETER: <b id="failParam"></b></div>
+      <div class="result" id="finalResult"></div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<script>
+const API = "https://oysho-lab-report.support446-ff6.workers.dev/";
+
+let currentData = null;
+
+const $ = id => document.getElementById(id);
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+async function searchBatch(){
+  const batch = $("batchInput").value.trim();
+
+  if(!batch){
+    $("status").textContent="Please enter Batch Number.";
+    return;
+  }
+
+  $("searchBtn").disabled=true;
+  $("status").textContent="Searching Google Sheet...";
+
+  try{
+    const response=await fetch(
+      API+"?batch="+encodeURIComponent(batch),
+      {cache:"no-store"}
+    );
+
+    const data=await response.json();
+
+    if(!response.ok || !data.success){
+      throw new Error(data.message || "Batch not found");
+    }
+
+    currentData=data;
+
+    $("manualPanel").style.display="block";
+    $("actionPanel").style.display="block";
+    $("reportArea").style.display="block";
+
+    $("actualGSM").value="";
+    $("avgGSM").value="";
+    $("actualDia").value="";
+
+    updateReport();
+
+    $("status").textContent=
+      "Report loaded successfully. Records found: "+data.recordsFound;
+
+  }catch(error){
+    $("status").textContent="Error: "+error.message;
+    currentData=null;
+    $("manualPanel").style.display="none";
+    $("actionPanel").style.display="none";
+    $("reportArea").style.display="none";
+  }finally{
+    $("searchBtn").disabled=false;
+  }
+}
+
+function updateReport(){
+  if(!currentData)return;
+
+  const r=currentData.report;
+  const t=currentData.tests;
+
+  const infoFields=[
+    ["LAB REF",r["Lab Reference No"]],
+    ["BUYER",r["Buyer"]],
+    ["BATCH NO",r["Batch No"]],
+    ["ROLL NO",r["Roll No"]],
+    ["COLOR",r["Color"]],
+    ["FABRIC",r["fabric type"]],
+    ["COMPOSITION",r["Fiber Composition"]],
+    ["QUANTITY",r["Quantity"]],
+    ["TEST DATE",r["In Date & Time"]],
+    ["BOOKING TYPE",r["Booking Type"]],
+    ["TEST STAGE",r["Sample Category/Test Stage"]],
+    ["SHIFT",r["Shift"]]
+  ];
+
+  $("info").innerHTML=infoFields.map(([k,v])=>
+    `<div><b>${esc(k)}:</b> ${esc(v||"-")}</div>`
+  ).join("");
+
+  const rows=[
+    ["C/F to washing",t["C/F to washing"]],
+    ["C/F to water",t["C/F to water"]],
+    ["CF to Perspiration (Acid)",t["CF to Perspiration (Acid)"]],
+    ["CF to Perspiration (Alkali)",t["CF to Perspiration (Alkali)"]],
+    ["CF To Dry Rub",t["CF To Dry Rub"]],
+    ["CF To Wet Rub",t["CF To Wet Rub"]],
+    ["C/F to Saliva",t["C/F to Saliva"]],
+    ["C/F to Dye Transfer storage",t["C/F to Dye Transfer storage"]],
+    ["Pilling (ICI)",t["Pilling"]],
+    ["Pilling - Martindale",t["Pilling - Martindale"]],
+    ["Phenolic Yellowing",t["Phenolic Yellowing"]],
+    ["Bursting strength",t["Bursting strength"]],
+    ["pH",t["pH"]],
+    ["DS Length",t["DS Length"]],
+    ["DS Width",t["DS Width"]],
+    ["SP",t["SP"]],
+    ["Required GSM",r["Required GSM"]],
+    ["Actual GSM",$("actualGSM").value],
+    ["AVG GSM",$("avgGSM").value],
+    ["Required Dia",r["Required Dia"]],
+    ["Actual Dia",$("actualDia").value],
+    ["Print Durability",t["Print Durability"]],
+    ["Recovery",t["Recovery"]]
+  ];
+
+  let html="";
+
+  for(let i=0;i<rows.length;i+=2){
+    const a=rows[i];
+    const b=rows[i+1]||["",""];
+
+    html+=`
+      <tr>
+        <td>${esc(a[0])}</td>
+        <td>${esc(a[1]||"-")}</td>
+        <td>${esc(b[0])}</td>
+        <td>${esc(b[1]||"-")}</td>
+      </tr>`;
+  }
+
+  $("testBody").innerHTML=html;
+
+  $("remarks").textContent=r["Customer Requirements"]||"-";
+  $("failParam").textContent=r["Fail Parameter"]||"-";
+
+  const result=String(r["Pass/Fail"]||"").toUpperCase();
+  $("finalResult").textContent=result;
+  $("finalResult").className="result "+
+    (result==="PASS"?"pass":result==="FAIL"?"fail":"");
+}
+
+["actualGSM","avgGSM","actualDia"].forEach(id=>{
+  $(id).addEventListener("input",updateReport);
+});
+
+$("batchInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter")searchBatch();
+});
+</script>
+
+</body>
+</html>
