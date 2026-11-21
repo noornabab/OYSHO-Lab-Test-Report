@@ -3,176 +3,242 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OYSHO | Fabric Lab Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OYSHO | Laboratory Test Report</title>
 
 <style>
 :root{
-  --navy:#172b4d;
+  --navy:#142b4d;
   --blue:#2457a6;
-  --light:#f3f6fb;
-  --border:#d9e0eb;
-  --text:#263449;
+  --border:#cbd5e1;
+  --bg:#f1f5f9;
+  --text:#172b4d;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:#eef2f7;
-  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
   color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
 }
 header{
   background:linear-gradient(120deg,#142b4d,#28599b);
   color:white;
-  padding:19px 24px;
+  padding:18px 24px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
 }
-header h1{font-size:20px;margin:0;letter-spacing:1px}
-header small{opacity:.8}
-main{max-width:1050px;margin:25px auto;padding:0 15px}
+header h1{
+  margin:0;
+  font-size:22px;
+  letter-spacing:2px;
+}
+header small{
+  font-size:11px;
+  opacity:.85;
+}
+main{
+  max-width:1100px;
+  margin:25px auto;
+  padding:0 15px;
+}
 .panel{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
-  border-radius:12px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 5px 20px #172b4d0b;
+  border-radius:10px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 4px 15px #172b4d0c;
 }
-.panel h2{font-size:16px;margin:0 0 15px}
-.search{display:flex;gap:10px}
+.panel h2{
+  font-size:16px;
+  margin:0 0 14px;
+}
+.search{
+  display:flex;
+  gap:10px;
+}
 input,textarea{
-  min-width:0;
   width:100%;
+  min-width:0;
   border:1px solid #cbd5e1;
-  border-radius:7px;
-  padding:12px;
+  border-radius:6px;
+  padding:11px;
   font-size:14px;
+  font-family:Arial,sans-serif;
   outline:none;
-  font-family:Arial,Helvetica,sans-serif;
 }
-input:focus,textarea:focus{border-color:var(--blue)}
+input:focus,textarea:focus{
+  border-color:var(--blue);
+}
 textarea{resize:vertical}
 button{
   border:0;
-  border-radius:7px;
+  border-radius:6px;
   padding:11px 20px;
-  background:var(--blue);
   color:white;
+  background:var(--blue);
   font-weight:bold;
   cursor:pointer;
 }
 button:disabled{opacity:.5}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.status{font-size:13px;margin-top:12px;color:#64748b}
+.status{
+  margin-top:10px;
+  font-size:13px;
+  color:#64748b;
+}
 .manual-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:12px;
 }
 .manual-grid label{
-  font-size:12px;
-  font-weight:bold;
   display:block;
   margin-bottom:6px;
+  font-size:12px;
+  font-weight:bold;
 }
-#reportArea{display:none}
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* REPORT */
+#reportArea{
+  display:none;
+  overflow-x:auto;
+  padding:10px 0 25px;
+}
 .report{
   width:9in;
   height:3in;
   min-height:3in;
-  margin:20px auto;
   background:white;
-  padding:.16in .22in;
+  margin:0 auto;
+  padding:.13in .18in;
   border:1px solid #222;
   color:#111;
-  font-family:Arial,sans-serif;
-  font-size:8px;
   overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:8px;
 }
-.report-head{
+.report-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   border-bottom:2px solid #172b4d;
-  padding-bottom:5px;
+  padding-bottom:4px;
 }
-.report-head h2{
-  font-size:16px;
-  letter-spacing:1.5px;
+.report-brand h2{
+  font-size:18px;
+  letter-spacing:2px;
   margin:0;
 }
-.report-head p{font-size:8px;margin:3px 0}
-.report-title{
-  text-align:center;
+.report-brand p{
+  font-size:7px;
+  margin:2px 0 0;
+}
+.report-heading{
+  text-align:right;
   font-size:10px;
   font-weight:bold;
-  margin:6px 0;
 }
-.info{
+.report-heading small{
+  display:block;
+  font-size:7px;
+  font-weight:normal;
+  margin-top:2px;
+}
+.top-info{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:3px 12px;
-  margin-bottom:6px;
+  grid-template-columns:1.4fr 1fr 1.3fr 1fr 1fr 1.3fr .6fr;
+  gap:5px;
+  margin:5px 0;
 }
-.info div{
-  border-bottom:1px solid #ddd;
-  padding:3px 0;
+.top-info-item{
   min-width:0;
+  border:1px solid #999;
+  padding:3px 4px;
+  overflow:hidden;
+}
+.top-info-item label{
+  display:block;
+  font-size:6px;
+  font-weight:bold;
+  color:#34445b;
+  margin-bottom:2px;
+  text-transform:uppercase;
+}
+.top-info-item strong{
+  display:block;
+  font-size:8px;
   overflow-wrap:anywhere;
 }
-.info b{color:#263449}
-.report table{
+.section-title{
+  text-align:center;
+  font-weight:bold;
+  font-size:10px;
+  margin:5px 0 4px;
+  letter-spacing:.5px;
+}
+.results-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.result-table{
   width:100%;
   border-collapse:collapse;
   table-layout:fixed;
 }
-.report th,.report td{
+.result-table th,
+.result-table td{
   border:1px solid #777;
   padding:3px 4px;
   text-align:center;
+  font-size:7px;
+  line-height:1.1;
   overflow-wrap:anywhere;
 }
-.report th{
+.result-table th{
   background:#e8edf5;
   font-weight:bold;
 }
-.report td:first-child,.report th:first-child{text-align:left}
+.result-table td:first-child,
+.result-table th:first-child{
+  text-align:left;
+}
+.result-table th:nth-child(1){width:46%}
+.result-table th:nth-child(2){width:24%}
+.result-table th:nth-child(3){width:30%}
 .quality-comments{
-  margin-top:6px;
   border:1px solid #777;
+  margin-top:5px;
   padding:4px 6px;
-  min-height:24px;
-  font-size:8px;
-  line-height:1.35;
+  min-height:23px;
+  line-height:1.25;
   overflow-wrap:anywhere;
 }
-.quality-comments b{color:#172b4d}
-.report-footer{
+.quality-comments b{
+  color:#172b4d;
+}
+.bottom-line{
   display:flex;
   justify-content:space-between;
-  gap:8px;
-  margin-top:6px;
-  font-size:8px;
-}
-.report-footer>div{min-width:0}
-.result{
-  font-weight:bold;
-  font-size:11px;
-  white-space:nowrap;
+  margin-top:4px;
+  font-size:7px;
 }
 .pass{color:#087443}
 .fail{color:#b42318}
-
 @media(max-width:700px){
   .manual-grid{grid-template-columns:1fr}
   .search{flex-direction:column}
-  #reportArea{overflow-x:auto}
-  .report{margin:10px 0}
+  .report{margin:0}
 }
 
-/* PRINT HALF SIZE */
+/* PRINT: EXACT 50% SCALE */
 @page{
   size:4.5in 1.5in;
   margin:0;
@@ -183,10 +249,14 @@ button:disabled{opacity:.5}
     height:1.5in!important;
     margin:0!important;
     padding:0!important;
+    overflow:hidden!important;
     background:white!important;
   }
-  body *{visibility:hidden!important}
-  #reportArea,#reportArea *{
+  body *{
+    visibility:hidden!important;
+  }
+  #reportArea,
+  #reportArea *{
     visibility:visible!important;
   }
   #reportArea{
@@ -201,53 +271,20 @@ button:disabled{opacity:.5}
     overflow:hidden!important;
   }
   .report{
-    width:4.5in!important;
-    height:1.5in!important;
-    min-height:1.5in!important;
-    max-height:1.5in!important;
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+    width:9in!important;
+    height:3in!important;
+    min-height:3in!important;
     margin:0!important;
-    padding:.06in .10in!important;
-    border:0!important;
+    transform:scale(.5)!important;
+    transform-origin:top left!important;
+    border:1px solid #222!important;
     overflow:hidden!important;
-    font-size:4px!important;
-    page-break-after:avoid!important;
-    break-after:avoid!important;
+    print-color-adjust:exact!important;
+    -webkit-print-color-adjust:exact!important;
   }
-  .report-head{
-    border-bottom:1px solid #172b4d!important;
-    padding-bottom:2px!important;
-  }
-  .report-head h2{font-size:8px!important}
-  .report-head p{font-size:4px!important;margin:1px 0!important}
-  .report-title{
-    font-size:5px!important;
-    margin:2px 0!important;
-  }
-  .info{
-    gap:1px 5px!important;
-    margin-bottom:2px!important;
-  }
-  .info div{
-    padding:1px 0!important;
-  }
-  .report th,.report td{
-    padding:1px 2px!important;
-    font-size:4px!important;
-    line-height:1.05!important;
-  }
-  .quality-comments{
-    margin-top:2px!important;
-    padding:2px 3px!important;
-    min-height:0!important;
-    font-size:4px!important;
-    line-height:1.1!important;
-  }
-  .report-footer{
-    margin-top:2px!important;
-    gap:3px!important;
-    font-size:4px!important;
-  }
-  .result{font-size:6px!important}
 }
 </style>
 </head>
@@ -259,7 +296,7 @@ button:disabled{opacity:.5}
     <h1>OYSHO</h1>
     <small>FABRIC LABORATORY | QUALITY CONTROL</small>
   </div>
-  <small>LAB REPORT SYSTEM</small>
+  <small>LAB REPORT MANAGEMENT SYSTEM</small>
 </header>
 
 <main>
@@ -271,7 +308,7 @@ button:disabled{opacity:.5}
     <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
   </div>
   <div class="status" id="status">
-    Enter Batch Number to load laboratory results.
+    Enter Batch Number to load laboratory test report.
   </div>
 </section>
 
@@ -295,11 +332,8 @@ button:disabled{opacity:.5}
 
 <section class="panel" id="qualityPanel" style="display:none">
   <h2>Quality Comments</h2>
-  <textarea
-    id="qualityComments"
-    rows="3"
-    placeholder="Enter Quality Comments here..."
-  ></textarea>
+  <textarea id="qualityComments" rows="3"
+    placeholder="Enter Quality Comments here..."></textarea>
 </section>
 
 <section class="panel" id="actionPanel" style="display:none">
@@ -311,66 +345,115 @@ button:disabled{opacity:.5}
 </section>
 
 <div id="reportArea">
-  <div class="report" id="report">
+<div class="report" id="report">
 
-    <div class="report-head">
-      <div>
-        <h2>OYSHO</h2>
-        <p>FABRIC LABORATORY TEST REPORT</p>
-      </div>
-      <div style="text-align:right">
-        <b>QUALITY CONTROL DEPARTMENT</b>
-        <p>LABORATORY TEST RESULT</p>
-      </div>
+  <div class="report-header">
+    <div class="report-brand">
+      <h2>OYSHO</h2>
+      <p>FABRIC LABORATORY QUALITY CONTROL</p>
     </div>
+    <div class="report-heading">
+      LABORATORY TEST RESULTS
+      <small>FABRIC TEST REPORT</small>
+    </div>
+  </div>
 
-    <div class="report-title">FABRIC TEST REPORT</div>
+  <div class="top-info">
+    <div class="top-info-item">
+      <label>Lab Ref.</label>
+      <strong id="labRef">-</strong>
+    </div>
+    <div class="top-info-item">
+      <label>Buyer</label>
+      <strong id="buyer">-</strong>
+    </div>
+    <div class="top-info-item">
+      <label>Batch</label>
+      <strong id="batch">-</strong>
+    </div>
+    <div class="top-info-item">
+      <label>Color</label>
+      <strong id="color">-</strong>
+    </div>
+    <div class="top-info-item">
+      <label>Result</label>
+      <strong id="result">-</strong>
+    </div>
+    <div class="top-info-item">
+      <label>Fail Parameter</label>
+      <strong id="failParameter">-</strong>
+    </div>
+    <div class="top-info-item">
+      <label>Roll No.</label>
+      <strong id="rollNo">-</strong>
+    </div>
+  </div>
 
-    <div class="info" id="info"></div>
+  <div class="section-title">LABORATORY TEST RESULTS</div>
 
-    <table>
+  <div class="results-grid">
+
+    <table class="result-table">
       <thead>
         <tr>
-          <th style="width:31%">TEST PARAMETER</th>
-          <th>RESULT</th>
-          <th style="width:31%">TEST PARAMETER</th>
-          <th>RESULT</th>
+          <th>Test</th>
+          <th>Result</th>
+          <th>Requirement</th>
         </tr>
       </thead>
-      <tbody id="testBody"></tbody>
+      <tbody id="leftTests"></tbody>
     </table>
 
-    <div class="quality-comments">
-      <b>QUALITY COMMENTS:</b>
-      <span id="reportQualityComments">-</span>
-    </div>
-
-    <div class="report-footer">
-      <div>
-        Remarks / Customer Requirements:
-        <b id="remarks"></b>
-      </div>
-      <div>
-        FAIL PARAMETER:
-        <b id="failParam"></b>
-      </div>
-      <div class="result" id="finalResult"></div>
-    </div>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Result</th>
+          <th>Requirement</th>
+        </tr>
+      </thead>
+      <tbody id="rightTests"></tbody>
+    </table>
 
   </div>
+
+  <div class="quality-comments">
+    <b>QUALITY COMMENTS:</b>
+    <span id="reportQualityComments">-</span>
+  </div>
+
+  <div class="bottom-line">
+    <span>
+      Customer Requirements:
+      <b id="customerRequirements">-</b>
+    </span>
+    <span>
+      Test Date:
+      <b id="testDate">-</b>
+    </span>
+  </div>
+
+</div>
 </div>
 
 </main>
 
 <script>
-const API = "https://oysho-lab-report.support446-ff6.workers.dev/";
+const API="https://oysho-lab-report.support446-ff6.workers.dev/";
 
-let currentData = null;
+let currentData=null;
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
+
+function clean(value){
+  if(value===null || value===undefined || String(value).trim()===""){
+    return "-";
+  }
+  return String(value).trim();
+}
 
 function esc(value){
-  return String(value ?? "").replace(/[&<>"']/g,c=>({
+  return String(value??"").replace(/[&<>"']/g,c=>({
     "&":"&amp;",
     "<":"&lt;",
     ">":"&gt;",
@@ -379,29 +462,158 @@ function esc(value){
   }[c]));
 }
 
+/*
+  Requirements:
+  Fixed requirements are shown here.
+  Required GSM and Required Dia come directly from Google Sheet.
+*/
+
+const LEFT_TESTS=[
+  {
+    name:"C/F to washing",
+    key:"C/F to washing",
+    requirement:"3-4"
+  },
+  {
+    name:"C/F to water",
+    key:"C/F to water",
+    requirement:"3"
+  },
+  {
+    name:"CF To Dry Rub",
+    key:"CF To Dry Rub",
+    requirement:"3"
+  },
+  {
+    name:"CF To Wet Rub",
+    key:"CF To Wet Rub",
+    requirement:"3"
+  },
+  {
+    name:"CF to Per.(Acid)",
+    key:"CF to Perspiration (Acid)",
+    requirement:"3"
+  },
+  {
+    name:"CF to Per.(Alkali)",
+    key:"CF to Perspiration (Alkali)",
+    requirement:"3"
+  },
+  {
+    name:"Pilling (ICI - ISO 12945-1)",
+    key:"Pilling",
+    requirement:"3-4"
+  },
+  {
+    name:"Bursting strength",
+    key:"Bursting strength",
+    requirement:"250"
+  },
+  {
+    name:"pH",
+    key:"pH",
+    requirement:"4.5 to 7.5"
+  }
+];
+
+const RIGHT_TESTS=[
+  {
+    name:"DS Length",
+    key:"DS Length",
+    requirement:"4.5 to 7.5"
+  },
+  {
+    name:"DS Width",
+    key:"DS Width",
+    requirement:"-"
+  },
+  {
+    name:"SP",
+    key:"SP",
+    requirement:"-"
+  },
+  {
+    name:"Required GSM",
+    meta:"Required GSM",
+    requirement:"+/-10.0 grs/m2"
+  },
+  {
+    name:"Actual GSM",
+    manual:"actualGSM",
+    requirement:""
+  },
+  {
+    name:"AVG GSM",
+    manual:"avgGSM",
+    requirement:""
+  },
+  {
+    name:"Required Dia",
+    meta:"Required Dia",
+    requirement:"(+/-3.0%)"
+  },
+  {
+    name:"Actual Dia",
+    manual:"actualDia",
+    requirement:""
+  },
+  {
+    name:"Recovery",
+    key:"Recovery",
+    requirement:"-"
+  }
+];
+
+function getTestResult(test){
+  const data=currentData;
+
+  if(test.manual){
+    return $(test.manual).value.trim()||"-";
+  }
+
+  if(test.meta){
+    return clean(data.report[test.meta]);
+  }
+
+  return clean(data.tests[test.key]);
+}
+
+function renderTable(list,target){
+  $(target).innerHTML=list.map(test=>{
+    const value=getTestResult(test);
+    return `
+      <tr>
+        <td>${esc(test.name)}</td>
+        <td>${esc(value)}</td>
+        <td>${esc(test.requirement||"-")}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
 async function searchBatch(){
 
-  const batch = $("batchInput").value.trim();
+  const batchNumber=$("batchInput").value.trim();
 
-  if(!batch){
+  if(!batchNumber){
     $("status").textContent="Please enter Batch Number.";
     return;
   }
 
   $("searchBtn").disabled=true;
-  $("status").textContent="Searching Google Sheet...";
+  $("status").textContent="Loading latest laboratory results...";
 
   try{
 
     const response=await fetch(
-      API+"?batch="+encodeURIComponent(batch),
+      API+"?batch="+encodeURIComponent(batchNumber),
       {cache:"no-store"}
     );
 
     const data=await response.json();
 
     if(!response.ok || !data.success){
-      throw new Error(data.message || "Batch not found");
+      throw new Error(data.message||"Batch not found.");
     }
 
     currentData=data;
@@ -442,94 +654,45 @@ function updateReport(){
   if(!currentData)return;
 
   const r=currentData.report;
-  const t=currentData.tests;
 
-  const infoFields=[
-    ["LAB REF",r["Lab Reference No"]],
-    ["BUYER",r["Buyer"]],
-    ["BATCH NO",r["Batch No"]],
-    ["ROLL NO",r["Roll No"]],
-    ["COLOR",r["Color"]],
-    ["FABRIC",r["fabric type"]],
-    ["COMPOSITION",r["Fiber Composition"]],
-    ["QUANTITY",r["Quantity"]],
-    ["TEST DATE",r["In Date & Time"]],
-    ["BOOKING TYPE",r["Booking Type"]],
-    ["TEST STAGE",r["Sample Category/Test Stage"]],
-    ["SHIFT",r["Shift"]]
-  ];
+  $("labRef").textContent=clean(r["Lab Reference No"]);
+  $("buyer").textContent=clean(r["Buyer"]);
+  $("batch").textContent=clean(r["Batch No"]);
+  $("color").textContent=clean(r["Color"]);
+  $("failParameter").textContent=clean(r["Fail Parameter"]);
+  $("rollNo").textContent=clean(r["Roll No"]);
 
-  $("info").innerHTML=infoFields.map(([k,v])=>
-    `<div><b>${esc(k)}:</b> ${esc(v||"-")}</div>`
-  ).join("");
+  const resultValue=clean(r["Pass/Fail"]);
+  $("result").textContent=resultValue;
 
-  const rows=[
-    ["C/F to washing",t["C/F to washing"]],
-    ["C/F to water",t["C/F to water"]],
-    ["CF to Perspiration (Acid)",t["CF to Perspiration (Acid)"]],
-    ["CF to Perspiration (Alkali)",t["CF to Perspiration (Alkali)"]],
-    ["CF To Dry Rub",t["CF To Dry Rub"]],
-    ["CF To Wet Rub",t["CF To Wet Rub"]],
-    ["C/F to Saliva",t["C/F to Saliva"]],
-    ["C/F to Dye Transfer storage",t["C/F to Dye Transfer storage"]],
-    ["Pilling (ICI)",t["Pilling"]],
-    ["Pilling - Martindale",t["Pilling - Martindale"]],
-    ["Phenolic Yellowing",t["Phenolic Yellowing"]],
-    ["Bursting strength",t["Bursting strength"]],
-    ["pH",t["pH"]],
-    ["DS Length",t["DS Length"]],
-    ["DS Width",t["DS Width"]],
-    ["SP",t["SP"]],
-    ["Required GSM",r["Required GSM"]],
-    ["Actual GSM",$("actualGSM").value],
-    ["AVG GSM",$("avgGSM").value],
-    ["Required Dia",r["Required Dia"]],
-    ["Actual Dia",$("actualDia").value],
-    ["Print Durability",t["Print Durability"]],
-    ["Recovery",t["Recovery"]]
-  ];
+  $("result").className=
+    resultValue.toUpperCase()==="PASS"?"pass":
+    resultValue.toUpperCase()==="FAIL"?"fail":"";
 
-  let html="";
-
-  for(let i=0;i<rows.length;i+=2){
-
-    const a=rows[i];
-    const b=rows[i+1]||["",""];
-
-    html+=`
-      <tr>
-        <td>${esc(a[0])}</td>
-        <td>${esc(a[1]||"-")}</td>
-        <td>${esc(b[0])}</td>
-        <td>${esc(b[1]||"-")}</td>
-      </tr>`;
-  }
-
-  $("testBody").innerHTML=html;
-
-  $("remarks").textContent=
-    r["Customer Requirements"]||"-";
-
-  $("failParam").textContent=
-    r["Fail Parameter"]||"-";
+  renderTable(LEFT_TESTS,"leftTests");
+  renderTable(RIGHT_TESTS,"rightTests");
 
   $("reportQualityComments").textContent=
     $("qualityComments").value.trim()||"-";
 
-  const result=String(r["Pass/Fail"]||"").toUpperCase();
+  $("customerRequirements").textContent=
+    clean(r["Customer Requirements"]);
 
-  $("finalResult").textContent=result;
-
-  $("finalResult").className="result "+
-    (result==="PASS"?"pass":result==="FAIL"?"fail":"");
+  $("testDate").textContent=
+    clean(r["In Date & Time"]);
 }
 
-["actualGSM","avgGSM","actualDia","qualityComments"].forEach(id=>{
+[
+  "actualGSM",
+  "avgGSM",
+  "actualDia",
+  "qualityComments"
+].forEach(id=>{
   $(id).addEventListener("input",updateReport);
 });
 
-$("batchInput").addEventListener("keydown",e=>{
-  if(e.key==="Enter")searchBatch();
+$("batchInput").addEventListener("keydown",event=>{
+  if(event.key==="Enter")searchBatch();
 });
 </script>
 
