@@ -222,7 +222,11 @@ button:disabled{opacity:.5;cursor:not-allowed}
   grid-template-columns:1fr 1fr;
   gap:7px;
 }
-.result-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.result-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
 .result-table th,.result-table td{
   border:1px solid #777;
   padding:3px 4px;
@@ -232,7 +236,8 @@ button:disabled{opacity:.5;cursor:not-allowed}
   overflow-wrap:anywhere;
 }
 .result-table th{background:#e8edf5;font-weight:bold}
-.result-table td:first-child,.result-table th:first-child{text-align:left}
+.result-table td:first-child,
+.result-table th:first-child{text-align:left}
 .result-table th:nth-child(1){width:46%}
 .result-table th:nth-child(2){width:24%}
 .result-table th:nth-child(3){width:30%}
@@ -260,7 +265,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   .report{margin:0}
 }
 
-/* PRINT: EXACT 5 x 2 INCH */
+/* PRINT: 5 x 2 INCH */
 @page{
   size:5in 2in;
   margin:0;
@@ -321,7 +326,11 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <section class="panel">
   <h2>Batch Search</h2>
   <div class="search">
-    <input id="batchInput" placeholder="Enter Batch Number">
+    <input
+      id="batchInput"
+      placeholder="Enter Batch Number"
+      autocomplete="off"
+    >
     <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
   </div>
   <div class="status" id="status">
@@ -333,7 +342,9 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <h2>Report Actions</h2>
   <div class="actions">
     <button onclick="openForm()">EDIT MANUAL INPUT</button>
-    <button class="btn-green" onclick="window.print()">PRINT / SAVE PDF</button>
+    <button class="btn-green" onclick="window.print()">
+      PRINT / SAVE PDF
+    </button>
   </div>
 </section>
 
@@ -374,8 +385,10 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
         <div class="modal-field">
           <label>Quality Comments</label>
-          <textarea id="qualityComments"
-            placeholder="Enter Quality Comments here..."></textarea>
+          <textarea
+            id="qualityComments"
+            placeholder="Enter Quality Comments here..."
+          ></textarea>
         </div>
 
       </div>
@@ -438,6 +451,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
   <div class="section-title">LABORATORY TEST RESULTS</div>
 
   <div class="results-grid">
+
     <table class="result-table">
       <thead>
         <tr>
@@ -459,6 +473,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
       </thead>
       <tbody id="rightTests"></tbody>
     </table>
+
   </div>
 
   <div class="quality-comments">
@@ -483,217 +498,365 @@ button:disabled{opacity:.5;cursor:not-allowed}
 </main>
 
 <script>
-const API="https://oysho-lab-report.support446-ff6.workers.dev/";
+"use strict";
 
-let currentData=null;
+const API =
+  "https://oysho-lab-report.support446-ff6.workers.dev/";
 
-const $=id=>document.getElementById(id);
+let currentData = null;
+let activeRequest = null;
 
-function clean(value){
-  if(value===null || value===undefined || String(value).trim()===""){
+const $ = id => document.getElementById(id);
+
+// CLEAN VALUE
+function clean(value) {
+  if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
     return "-";
   }
+
   return String(value).trim();
 }
 
-function esc(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
+// HTML ESCAPE
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
   }[c]));
 }
 
-const LEFT_TESTS=[
-  {name:"C/F to washing",key:"C/F to washing",requirement:"3-4"},
-  {name:"C/F to water",key:"C/F to water",requirement:"3"},
-  {name:"CF To Dry Rub",key:"CF To Dry Rub",requirement:"3"},
-  {name:"CF To Wet Rub",key:"CF To Wet Rub",requirement:"3"},
-  {name:"CF to Per.(Acid)",key:"CF to Perspiration (Acid)",requirement:"3"},
-  {name:"CF to Per.(Alkali)",key:"CF to Perspiration (Alkali)",requirement:"3"},
-  {name:"Pilling - Martindale",key:"Pilling",requirement:"3-4"},
-  {name:"Bursting strength",key:"Bursting strength",requirement:"250"},
-  {name:"pH",key:"pH",requirement:"4.5 to 7.5"}
+// LEFT TESTS
+const LEFT_TESTS = [
+  {
+    name: "C/F to washing",
+    key: "C/F to washing",
+    requirement: "3-4"
+  },
+  {
+    name: "C/F to water",
+    key: "C/F to water",
+    requirement: "3"
+  },
+  {
+    name: "CF To Dry Rub",
+    key: "CF To Dry Rub",
+    requirement: "3"
+  },
+  {
+    name: "CF To Wet Rub",
+    key: "CF To Wet Rub",
+    requirement: "3"
+  },
+  {
+    name: "CF to Per.(Acid)",
+    key: "CF to Perspiration (Acid)",
+    requirement: "3"
+  },
+  {
+    name: "CF to Per.(Alkali)",
+    key: "CF to Perspiration (Alkali)",
+    requirement: "3"
+  },
+  {
+    name: "Pilling - Martindale",
+    key: "Pilling - Martindale",
+    requirement: "3-4"
+  },
+  {
+    name: "Bursting strength",
+    key: "Bursting strength",
+    requirement: "250"
+  },
+  {
+    name: "pH",
+    key: "pH",
+    requirement: "4.5 to 7.5"
+  }
 ];
 
-const RIGHT_TESTS=[
-  {name:"DS Length",key:"DS Length",requirement:"+0.0% to -3.0%"},
-  {name:"DS Width",key:"DS Width",requirement:"+0.0% to -3.0%"},
-  {name:"SP",key:"SP",requirement:"3"},
-  {name:"Required GSM",meta:"Required GSM",requirement:"+/-10.0 grs/m2"},
-  {name:"Actual GSM",manual:"actualGSM",requirement:""},
-  {name:"AVG GSM",manual:"avgGSM",requirement:""},
-  {name:"Required Dia",meta:"Required Dia",requirement:"(+/-3.0%)"},
-  {name:"Actual Dia",manual:"actualDia",requirement:""},
-  {name:"Recovery",key:"Recovery",requirement:"-"}
+// RIGHT TESTS
+const RIGHT_TESTS = [
+  {
+    name: "DS Length",
+    key: "DS Length",
+    requirement: "+0.0% to -3.0%"
+  },
+  {
+    name: "DS Width",
+    key: "DS Width",
+    requirement: "+0.0% to -3.0%"
+  },
+  {
+    name: "SP",
+    key: "SP",
+    requirement: "3"
+  },
+  {
+    name: "Required GSM",
+    meta: "Required GSM",
+    requirement: "+/-10.0 grs/m2"
+  },
+  {
+    name: "Actual GSM",
+    manual: "actualGSM",
+    requirement: ""
+  },
+  {
+    name: "AVG GSM",
+    manual: "avgGSM",
+    requirement: ""
+  },
+  {
+    name: "Required Dia",
+    meta: "Required Dia",
+    requirement: "(+/-3.0%)"
+  },
+  {
+    name: "Actual Dia",
+    manual: "actualDia",
+    requirement: ""
+  },
+  {
+    name: "Recovery",
+    key: "Recovery",
+    requirement: "-"
+  }
 ];
 
-function getTestResult(test){
-  const data=currentData;
-
-  if(test.manual){
-    return $(test.manual).value.trim()||"-";
+// GET RESULT
+function getTestResult(test) {
+  if (test.manual) {
+    return $(test.manual).value.trim() || "-";
   }
 
-  if(test.meta){
-    return clean(data.report[test.meta]);
+  if (test.meta) {
+    return clean(currentData.report[test.meta]);
   }
 
-  return clean(data.tests[test.key]);
+  return clean(currentData.tests[test.key]);
 }
 
-function renderTable(list,target){
-  $(target).innerHTML=list.map(test=>{
-    const value=getTestResult(test);
+// RENDER TEST TABLE
+function renderTable(list, target) {
+  $(target).innerHTML = list.map(test => {
+    const value = getTestResult(test);
+
     return `
       <tr>
         <td>${esc(test.name)}</td>
         <td>${esc(value)}</td>
-        <td>${esc(test.requirement||"-")}</td>
+        <td>${esc(test.requirement || "-")}</td>
       </tr>
     `;
   }).join("");
 }
 
-async function searchBatch(){
+// SEARCH BATCH
+async function searchBatch() {
+  const batchNumber = $("batchInput").value.trim();
 
-  const batchNumber=$("batchInput").value.trim();
-
-  if(!batchNumber){
-    $("status").textContent="Please enter Batch Number.";
+  if (!batchNumber) {
+    $("status").textContent = "Please enter Batch Number.";
     $("batchInput").focus();
     return;
   }
 
-  $("searchBtn").disabled=true;
-  $("status").textContent="Loading latest laboratory results...";
+  // Previous request cancel
+  if (activeRequest) {
+    activeRequest.abort();
+  }
 
-  try{
+  activeRequest = new AbortController();
 
-    const response=await fetch(
-      API+"?batch="+encodeURIComponent(batchNumber),
-      {cache:"no-store"}
+  const requestController = activeRequest;
+
+  $("searchBtn").disabled = true;
+  $("status").textContent =
+    "Loading latest laboratory results...";
+
+  try {
+    const response = await fetch(
+      API + "?batch=" + encodeURIComponent(batchNumber),
+      {
+        method: "GET",
+        cache: "no-store",
+        signal: requestController.signal
+      }
     );
 
-    const data=await response.json();
+    let data;
 
-    if(!response.ok || !data.success){
-      throw new Error(data.message||"Batch not found.");
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Invalid API response.");
     }
 
-    if(!data.report || !data.tests){
-      throw new Error("Invalid report data received from API.");
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Batch not found."
+      );
     }
 
-    currentData=data;
+    if (!data.report || !data.tests) {
+      throw new Error(
+        "Invalid report data received from API."
+      );
+    }
 
-    // Reset manual fields for the new batch
-    $("actualGSM").value="";
-    $("avgGSM").value="";
-    $("actualDia").value="";
-    $("qualityComments").value="";
+    currentData = data;
 
-    $("popupBatch").textContent=clean(data.report["Batch No"]);
-    $("popupBuyer").textContent="Buyer: "+clean(data.report["Buyer"]);
+    // RESET MANUAL FIELDS
+    $("actualGSM").value = "";
+    $("avgGSM").value = "";
+    $("actualDia").value = "";
+    $("qualityComments").value = "";
 
-    $("actionPanel").style.display="block";
-    $("reportArea").style.display="block";
+    // POPUP DETAILS
+    $("popupBatch").textContent =
+      clean(data.report["Batch No"]);
+
+    $("popupBuyer").textContent =
+      "Buyer: " + clean(data.report["Buyer"]);
+
+    // SHOW REPORT
+    $("actionPanel").style.display = "block";
+    $("reportArea").style.display = "block";
 
     updateReport();
 
-    $("status").textContent=
-      "Report loaded successfully. Records found: "+data.recordsFound;
+    $("status").textContent =
+      "Report loaded successfully. Records found: " +
+      data.recordsFound;
 
-    // Open popup automatically after Enter / Search
+    // OPEN INPUT POPUP
     openForm();
 
-  }catch(error){
+  } catch (error) {
+    if (error.name === "AbortError") {
+      return;
+    }
 
-    $("status").textContent="Error: "+error.message;
+    currentData = null;
 
-    currentData=null;
-    $("actionPanel").style.display="none";
-    $("reportArea").style.display="none";
+    $("actionPanel").style.display = "none";
+    $("reportArea").style.display = "none";
+
     closeForm();
 
-  }finally{
-    $("searchBtn").disabled=false;
+    $("status").textContent =
+      "Error: " + error.message;
+
+  } finally {
+    if (activeRequest === requestController) {
+      activeRequest = null;
+      $("searchBtn").disabled = false;
+    }
   }
 }
 
-function openForm(){
-  if(!currentData)return;
+// OPEN FORM
+function openForm() {
+  if (!currentData) return;
+
   $("inputModal").classList.add("show");
 }
 
-function closeForm(){
+// CLOSE FORM
+function closeForm() {
   $("inputModal").classList.remove("show");
 }
 
-function saveManualInput(){
-
-  if(!currentData)return;
+// SAVE MANUAL INPUT
+function saveManualInput() {
+  if (!currentData) return;
 
   updateReport();
+
   closeForm();
 
-  $("status").textContent=
+  $("status").textContent =
     "Manual input updated successfully. Report is ready to print.";
 }
 
-function updateReport(){
+// UPDATE REPORT
+function updateReport() {
+  if (!currentData) return;
 
-  if(!currentData)return;
+  const r = currentData.report;
 
-  const r=currentData.report;
+  $("labRef").textContent =
+    clean(r["Lab Reference No"]);
 
-  $("labRef").textContent=clean(r["Lab Reference No"]);
-  $("buyer").textContent=clean(r["Buyer"]);
-  $("batch").textContent=clean(r["Batch No"]);
-  $("color").textContent=clean(r["Color"]);
-  $("failParameter").textContent=clean(r["Fail Parameter"]);
-  $("rollNo").textContent=clean(r["Roll No"]);
+  $("buyer").textContent =
+    clean(r["Buyer"]);
 
-  const resultValue=clean(r["Pass/Fail"]);
-  $("result").textContent=resultValue;
+  $("batch").textContent =
+    clean(r["Batch No"]);
 
-  $("result").className=
-    resultValue.toUpperCase()==="PASS"?"pass":
-    resultValue.toUpperCase()==="FAIL"?"fail":"";
+  $("color").textContent =
+    clean(r["Color"]);
 
-  renderTable(LEFT_TESTS,"leftTests");
-  renderTable(RIGHT_TESTS,"rightTests");
+  $("failParameter").textContent =
+    clean(r["Fail Parameter"]);
 
-  $("reportQualityComments").textContent=
-    $("qualityComments").value.trim()||"-";
+  $("rollNo").textContent =
+    clean(r["Roll No"]);
 
-  $("customerRequirements").textContent=
+  // PASS / FAIL
+  const resultValue = clean(r["Pass/Fail"]);
+
+  $("result").textContent = resultValue;
+
+  $("result").className =
+    resultValue.toUpperCase() === "PASS"
+      ? "pass"
+      : resultValue.toUpperCase() === "FAIL"
+        ? "fail"
+        : "";
+
+  // TEST TABLES
+  renderTable(LEFT_TESTS, "leftTests");
+  renderTable(RIGHT_TESTS, "rightTests");
+
+  // QUALITY COMMENTS
+  $("reportQualityComments").textContent =
+    $("qualityComments").value.trim() || "-";
+
+  // CUSTOMER REQUIREMENTS
+  $("customerRequirements").textContent =
     clean(r["Customer Requirements"]);
 
-  $("testDate").textContent=
+  // TEST DATE
+  $("testDate").textContent =
     clean(r["In Date & Time"]);
 }
 
-// Press Enter to search batch
-$("batchInput").addEventListener("keydown",event=>{
-  if(event.key==="Enter"){
+// ENTER TO SEARCH
+$("batchInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
     event.preventDefault();
     searchBatch();
   }
 });
 
-// Close popup by clicking outside
-$("inputModal").addEventListener("click",event=>{
-  if(event.target===$("inputModal")){
+// CLOSE POPUP OUTSIDE CLICK
+$("inputModal").addEventListener("click", event => {
+  if (event.target === $("inputModal")) {
     closeForm();
   }
 });
 
-// Escape key closes popup
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"){
+// ESCAPE KEY
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
     closeForm();
   }
 });
