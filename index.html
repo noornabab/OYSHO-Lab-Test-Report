@@ -4,359 +4,1068 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OYSHO | Laboratory Test Report</title>
+<meta name="theme-color" content="#101d35">
+<title>OYSHO | Laboratory Management</title>
 
 <style>
 :root{
-  --navy:#142b4d;
-  --blue:#2457a6;
-  --border:#cbd5e1;
-  --bg:#f1f5f9;
-  --text:#172b4d;
+  --navy:#101d35;
+  --navy2:#172b4d;
+  --blue:#2864d8;
+  --blue2:#3979ef;
+  --cyan:#22b8cf;
+  --bg:#f3f6fb;
+  --white:#fff;
+  --text:#17243a;
+  --muted:#718096;
+  --border:#e2e8f0;
+  --green:#07865b;
+  --red:#d9364f;
+  --shadow:0 12px 35px rgba(20,43,77,.07);
 }
+
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
-header{
-  background:linear-gradient(120deg,#142b4d,#28599b);
-  color:white;
-  padding:18px 24px;
+
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+
+/* =========================
+   TOP NAVIGATION
+========================= */
+
+.topbar{
+  min-height:76px;
+  padding:0 5%;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:20px;
+  background:linear-gradient(115deg,#101d35,#1b3967);
+  color:white;
+  box-shadow:0 5px 20px #101d3520;
 }
-header h1{margin:0;font-size:22px;letter-spacing:2px}
-header small{font-size:11px;opacity:.85}
-main{max-width:1100px;margin:25px auto;padding:0 15px}
-.panel{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:18px;
-  margin-bottom:16px;
-  box-shadow:0 4px 15px #172b4d0c;
-}
-.panel h2{font-size:16px;margin:0 0 14px}
-.search{display:flex;gap:10px}
-input,textarea,select{
-  width:100%;min-width:0;
-  border:1px solid #cbd5e1;
-  border-radius:6px;
-  padding:10px;
-  font-size:13px;
-  font-family:Arial,sans-serif;
-  outline:none;
-}
-input:focus,textarea:focus{border-color:var(--blue)}
-textarea{resize:vertical}
-button{
-  border:0;border-radius:6px;
-  padding:11px 18px;color:white;
-  background:var(--blue);
-  font-weight:bold;cursor:pointer;
-}
-button:disabled{opacity:.5;cursor:not-allowed}
-.status{margin-top:10px;font-size:13px;color:#64748b}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn-green{background:#087443}
-.btn-gray{background:#64748b}
-.btn-dark{background:#142b4d}
-.btn-red{background:#b42318}
 
-/* REPORT POPUP */
-.modal{
-  display:none;
-  position:fixed;inset:0;z-index:9999;
-  background:rgba(10,25,48,.78);
-  align-items:center;justify-content:center;
-  padding:15px;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:13px;
 }
-.modal.show{display:flex}
-.modal-box{
-  background:#f8fafc;
-  width:100%;max-width:1100px;
-  max-height:94vh;
-  overflow-y:auto;
-  border-radius:13px;
-  box-shadow:0 20px 60px #0005;
-}
-.modal-header{
-  background:linear-gradient(120deg,#142b4d,#28599b);
-  color:white;padding:15px 20px;
-  display:flex;justify-content:space-between;
-  align-items:center;position:sticky;top:0;z-index:5;
-}
-.modal-header h2{margin:0;font-size:17px}
-.close-btn{background:#ffffff20;padding:5px 12px;font-size:21px}
-.modal-body{padding:18px}
-.modal-toolbar{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:10px;flex-wrap:wrap;
-  margin-bottom:15px;
-}
-.modal-batch{
-  background:#eff6ff;border:1px solid #bfdbfe;
-  border-radius:8px;padding:10px 13px;
-  font-size:13px;flex:1;min-width:200px;
-}
-.editor-panel{
-  background:white;border:1px solid #dbe3ee;
-  border-radius:9px;padding:15px;margin-bottom:15px;
-}
-.editor-title{
-  font-size:14px;font-weight:bold;
-  margin-bottom:12px;color:#142b4d;
-}
-.editor-grid{
+
+.brand-logo{
+  width:43px;
+  height:43px;
+  border-radius:12px;
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  place-items:center;
+  background:linear-gradient(145deg,#4a8aff,#1e55b6);
+  font-size:22px;
+  font-weight:900;
+  box-shadow:0 5px 16px #0003;
+}
+
+.brand-name{
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:3px;
+  line-height:1.1;
+}
+
+.brand-subtitle{
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#b9cbe9;
+  margin-top:5px;
+}
+
+.topbar-right{
+  text-align:right;
+}
+
+.system-label{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.3px;
+}
+
+.system-sub{
+  font-size:10px;
+  color:#aebfda;
+  margin-top:5px;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+main{
+  max-width:1250px;
+  margin:35px auto;
+  padding:0 22px 45px;
+}
+
+.page-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:15px;
+  margin-bottom:24px;
+}
+
+.page-heading h2{
+  margin:0;
+  font-size:25px;
+  font-weight:850;
+  letter-spacing:-.7px;
+}
+
+.page-heading p{
+  margin:7px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.page-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border:1px solid #dbe6f7;
+  border-radius:30px;
+  background:#edf4ff;
+  color:#2858a5;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+.online-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#0ba66c;
+  box-shadow:0 0 0 4px #0ba66c20;
+}
+
+/* =========================
+   PANELS
+========================= */
+
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:23px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+
+.panel-heading{
+  display:flex;
+  align-items:center;
   gap:12px;
+  margin-bottom:19px;
 }
-.field label{
-  display:block;font-size:11px;font-weight:bold;
-  color:#475569;margin-bottom:5px;
+
+.panel-icon{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  background:#edf4ff;
+  border-radius:11px;
+  color:#2864d8;
+  font-size:19px;
 }
-.field textarea{min-height:65px}
-.editor-grid .wide{grid-column:1/-1}
-.report-wrap{
-  background:#e2e8f0;border:1px solid #cbd5e1;
-  border-radius:9px;padding:12px;
+
+.panel-heading h3{
+  margin:0;
+  font-size:15px;
+  font-weight:800;
+}
+
+.panel-heading p{
+  margin:4px 0 0;
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+  display:flex;
+  gap:12px;
+  align-items:stretch;
+}
+
+.search-input-wrap{
+  flex:1;
+  min-width:0;
+  position:relative;
+}
+
+.search-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:17px;
+  color:#8090a7;
+}
+
+.search-input{
+  width:100%;
+  height:51px;
+  padding:0 15px 0 45px;
+  border:1px solid #d7e0ed;
+  border-radius:9px;
+  outline:none;
+  font-size:14px;
+  font-weight:600;
+  color:var(--navy);
+  background:#fbfcfe;
+  transition:.2s;
+}
+
+.search-input:focus{
+  border-color:var(--blue);
+  background:white;
+  box-shadow:0 0 0 4px #2864d817;
+}
+
+.search-input::placeholder{
+  color:#a1adbd;
+  font-weight:400;
+}
+
+.btn{
+  border:0;
+  border-radius:9px;
+  min-height:47px;
+  padding:0 21px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.6px;
+  transition:.2s;
+}
+
+.btn-primary{
+  color:white;
+  background:linear-gradient(120deg,#2864d8,#3979ef);
+  box-shadow:0 5px 13px #2864d82c;
+}
+
+.btn-primary:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px #2864d840;
+}
+
+.btn-green{
+  color:white;
+  background:linear-gradient(120deg,#07865b,#0ca875);
+  box-shadow:0 5px 13px #07865b20;
+}
+
+.btn-gray{
+  color:#475569;
+  background:#edf1f6;
+}
+
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.status-row{
+  margin-top:15px;
+  padding-top:13px;
+  border-top:1px solid #edf0f5;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#718096;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.status-indicator{
+  width:8px;
+  height:8px;
+  flex:0 0 8px;
+  border-radius:50%;
+  background:#94a3b8;
+}
+
+.status-indicator.active{
+  background:#0aa66b;
+}
+
+.status-indicator.loading{
+  background:#e59b25;
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.3}
+}
+
+/* =========================
+   REPORT ACTIONS
+========================= */
+
+#actionPanel{display:none}
+
+.action-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.action-heading h3{
+  margin:0;
+  font-size:15px;
+}
+
+.action-heading p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+/* =========================
+   REPORT PREVIEW
+========================= */
+
+#reportArea{
+  display:none;
+  padding:5px 0 30px;
   overflow-x:auto;
 }
-.preview-label{
-  font-size:12px;font-weight:bold;
-  color:#334155;margin:0 0 10px;
-}
-.modal-footer{
-  display:flex;justify-content:flex-end;
-  gap:10px;flex-wrap:wrap;
-  padding-top:15px;margin-top:15px;
-  border-top:1px solid #e2e8f0;
+
+.preview-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:5px 0 14px;
+  gap:10px;
 }
 
-/* REPORT */
-#reportArea{display:none}
+.preview-heading h3{
+  font-size:14px;
+  margin:0;
+}
+
+.preview-heading span{
+  color:var(--muted);
+  font-size:10px;
+}
+
 .report{
-  width:9in;height:3in;min-height:3in;
-  background:white;margin:0 auto;
+  width:9in;
+  height:3in;
+  min-height:3in;
+  background:white;
+  margin:0 auto;
   padding:.13in .18in;
-  border:1px solid #222;color:#111;
-  overflow:hidden;font-family:Arial,Helvetica,sans-serif;
+  border:1px solid #222;
+  color:#111;
+  overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif;
   font-size:8px;
 }
+
 .report-header{
-  display:flex;justify-content:space-between;
-  align-items:center;border-bottom:2px solid #172b4d;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:2px solid #172b4d;
   padding-bottom:4px;
 }
-.report-brand h2{font-size:18px;letter-spacing:2px;margin:0}
-.report-brand p{font-size:7px;margin:2px 0 0}
-.report-heading{text-align:right;font-size:10px;font-weight:bold}
-.report-heading small{
-  display:block;font-size:7px;font-weight:normal;margin-top:2px;
+
+.report-brand h2{
+  font-size:18px;
+  letter-spacing:2px;
+  margin:0;
 }
+
+.report-brand p{
+  font-size:7px;
+  margin:2px 0 0;
+}
+
+.report-heading{
+  text-align:right;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.report-heading small{
+  display:block;
+  font-size:7px;
+  font-weight:normal;
+  margin-top:2px;
+}
+
 .top-info{
   display:grid;
   grid-template-columns:1.4fr 1fr 1.3fr 1fr 1fr 1.3fr .6fr;
-  gap:5px;margin:5px 0;
+  gap:5px;
+  margin:5px 0;
 }
+
 .top-info-item{
-  min-width:0;border:1px solid #999;
-  padding:3px 4px;overflow:hidden;
+  min-width:0;
+  border:1px solid #999;
+  padding:3px 4px;
+  overflow:hidden;
 }
+
 .top-info-item label{
-  display:block;font-size:6px;font-weight:bold;
-  color:#34445b;margin-bottom:2px;text-transform:uppercase;
+  display:block;
+  font-size:6px;
+  font-weight:bold;
+  color:#34445b;
+  margin-bottom:2px;
+  text-transform:uppercase;
 }
+
 .top-info-item strong{
-  display:block;font-size:8px;overflow-wrap:anywhere;
-}
-.section-title{
-  text-align:center;font-weight:bold;
-  font-size:10px;margin:5px 0 4px;letter-spacing:.5px;
-}
-.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.result-table{width:100%;border-collapse:collapse;table-layout:fixed}
-.result-table th,.result-table td{
-  border:1px solid #777;padding:3px 4px;
-  text-align:center;font-size:7px;line-height:1.1;
+  display:block;
+  font-size:8px;
   overflow-wrap:anywhere;
 }
-.result-table th{background:#e8edf5;font-weight:bold}
-.result-table td:first-child,.result-table th:first-child{text-align:left}
+
+.section-title{
+  text-align:center;
+  font-weight:bold;
+  font-size:10px;
+  margin:5px 0 4px;
+  letter-spacing:.5px;
+}
+
+.results-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.result-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+
+.result-table th,
+.result-table td{
+  border:1px solid #777;
+  padding:3px 4px;
+  text-align:center;
+  font-size:7px;
+  line-height:1.1;
+  overflow-wrap:anywhere;
+}
+
+.result-table th{
+  background:#e8edf5;
+  font-weight:bold;
+}
+
+.result-table td:first-child,
+.result-table th:first-child{
+  text-align:left;
+}
+
 .result-table th:nth-child(1){width:46%}
 .result-table th:nth-child(2){width:24%}
 .result-table th:nth-child(3){width:30%}
+
 .quality-comments{
-  border:1px solid #777;margin-top:5px;
-  padding:4px 6px;min-height:23px;
-  line-height:1.25;overflow-wrap:anywhere;
+  border:1px solid #777;
+  margin-top:5px;
+  padding:4px 6px;
+  min-height:23px;
+  line-height:1.25;
+  overflow-wrap:anywhere;
 }
+
 .quality-comments b{color:#172b4d}
-.bottom-line{display:flex;justify-content:space-between;margin-top:4px;font-size:7px}
+
+.bottom-line{
+  display:flex;
+  justify-content:space-between;
+  margin-top:4px;
+  font-size:7px;
+}
+
 .pass{color:#087443}
 .fail{color:#b42318}
 
-/* HIDDEN PRINT AREA */
-@page{size:5in 2in;margin:0}
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(10,22,42,.68);
+  backdrop-filter:blur(5px);
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  background:#fff;
+  width:100%;
+  max-width:650px;
+  max-height:92vh;
+  overflow-y:auto;
+  border-radius:16px;
+  box-shadow:0 25px 80px #0004;
+  animation:modalIn .2s ease-out;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(12px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.modal-header{
+  background:linear-gradient(120deg,#101d35,#28599b);
+  color:white;
+  padding:19px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:2;
+}
+
+.modal-header h2{
+  margin:0;
+  font-size:16px;
+}
+
+.modal-header p{
+  margin:5px 0 0;
+  font-size:10px;
+  color:#c4d4ec;
+}
+
+.close-btn{
+  background:#ffffff20;
+  color:white;
+  border:0;
+  border-radius:8px;
+  width:35px;
+  height:35px;
+  font-size:22px;
+}
+
+.modal-body{padding:22px}
+
+.modal-batch{
+  background:linear-gradient(110deg,#edf4ff,#f7faff);
+  border:1px solid #d6e5fb;
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:20px;
+  font-size:12px;
+  line-height:1.8;
+}
+
+.modal-batch strong{color:#1e4f9d}
+
+.modal-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:17px;
+}
+
+.modal-field label{
+  display:block;
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:7px;
+  color:#34445b;
+}
+
+.modal-field input,
+.modal-field textarea{
+  width:100%;
+  border:1px solid #d9e1ed;
+  border-radius:8px;
+  padding:12px;
+  font-size:13px;
+  outline:none;
+  background:#fbfcfe;
+  color:var(--text);
+  transition:.2s;
+}
+
+.modal-field input:focus,
+.modal-field textarea:focus{
+  border-color:var(--blue);
+  background:white;
+  box-shadow:0 0 0 3px #2864d815;
+}
+
+.modal-field textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.modal-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  margin-top:22px;
+  padding-top:17px;
+  border-top:1px solid #e8edf4;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  text-align:center;
+  padding:20px;
+  color:#8a98aa;
+  font-size:10px;
+}
+
+.footer strong{color:#50627b}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+  .topbar{
+    padding:14px 17px;
+    min-height:68px;
+  }
+
+  .brand-name{font-size:20px}
+  .brand-subtitle{font-size:8px}
+  .system-label{font-size:9px}
+  .system-sub{font-size:8px}
+
+  main{
+    margin:24px auto;
+    padding:0 13px 30px;
+  }
+
+  .page-heading{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .page-heading h2{font-size:22px}
+
+  .panel{
+    padding:17px;
+    border-radius:12px;
+  }
+
+  .search-box{flex-direction:column}
+  .search-input{height:49px}
+  .search-box .btn{width:100%}
+
+  .action-heading{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .actions{width:100%}
+  .actions .btn{flex:1}
+
+  .modal-grid{grid-template-columns:1fr}
+  .modal-body{padding:17px}
+
+  .report{margin:0}
+}
+
+@media(max-width:400px){
+  .brand-logo{
+    width:37px;
+    height:37px;
+  }
+
+  .brand-name{font-size:18px}
+  .topbar-right{max-width:115px}
+  .system-label{font-size:8px}
+}
+
+/* =========================
+   PRINT: 5 x 2 INCH
+========================= */
+
+@page{
+  size:5in 2in;
+  margin:0;
+}
+
 @media print{
   html,body{
-    width:5in!important;height:2in!important;
-    margin:0!important;padding:0!important;
-    overflow:hidden!important;background:white!important;
+    width:5in!important;
+    height:2in!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    background:white!important;
   }
+
   body *{visibility:hidden!important}
-  #reportArea,#reportArea *{visibility:visible!important}
-  #reportArea{
-    display:block!important;position:absolute!important;
-    left:.25in!important;top:.25in!important;
-    width:4.5in!important;height:1.5in!important;
-    margin:0!important;padding:0!important;overflow:hidden!important;
+
+  #reportArea,
+  #reportArea *{
+    visibility:visible!important;
   }
+
+  #reportArea{
+    display:block!important;
+    position:absolute!important;
+    left:.25in!important;
+    top:.25in!important;
+    width:4.5in!important;
+    height:1.5in!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  .preview-heading{display:none!important}
+
   .report{
-    position:absolute!important;left:0!important;top:0!important;
-    width:9in!important;height:3in!important;
-    min-height:3in!important;margin:0!important;
-    transform:scale(.5)!important;transform-origin:top left!important;
-    border:1px solid #222!important;overflow:hidden!important;
+    position:absolute!important;
+    left:0!important;
+    top:0!important;
+    width:9in!important;
+    height:3in!important;
+    min-height:3in!important;
+    margin:0!important;
+    transform:scale(.5)!important;
+    transform-origin:top left!important;
+    border:1px solid #222!important;
+    overflow:hidden!important;
     print-color-adjust:exact!important;
     -webkit-print-color-adjust:exact!important;
   }
-}
-
-@media(max-width:700px){
-  header{padding:15px}
-  header h1{font-size:19px}
-  header>small{display:none}
-  .search{flex-direction:column}
-  .editor-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .modal{padding:6px}
-  .modal-box{max-height:97vh}
-  .modal-body{padding:10px}
-}
-@media(max-width:420px){
-  .editor-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div>
-    <h1>OYSHO</h1>
-    <small>FABRIC LABORATORY | QUALITY CONTROL</small>
+<!-- TOP NAVIGATION -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-logo">O</div>
+    <div>
+      <div class="brand-name">OYSHO</div>
+      <div class="brand-subtitle">FABRIC LABORATORY · QUALITY CONTROL</div>
+    </div>
   </div>
-  <small>LAB REPORT MANAGEMENT SYSTEM</small>
+
+  <div class="topbar-right">
+    <div class="system-label">LAB REPORT MANAGEMENT</div>
+    <div class="system-sub">Laboratory Test Report System</div>
+  </div>
 </header>
 
 <main>
-<section class="panel">
-  <h2>Batch Search</h2>
-  <div class="search">
-    <input id="batchInput" placeholder="Enter Batch Number" autocomplete="off">
-    <button id="searchBtn" onclick="searchBatch()">SEARCH</button>
-  </div>
-  <div class="status" id="status">
-    Enter Batch Number and press ENTER to open the report.
-  </div>
-</section>
 
-<section class="panel" id="actionPanel" style="display:none">
-  <h2>Report Actions</h2>
-  <div class="actions">
-    <button onclick="openReportPopup()">OPEN REPORT / EDIT</button>
-    <button class="btn-green" onclick="printReport()">PRINT / SAVE PDF</button>
+  <!-- PAGE HEADING -->
+  <div class="page-heading">
+    <div>
+      <h2>Laboratory Dashboard</h2>
+      <p>Search, review and manage fabric laboratory test reports.</p>
+    </div>
+
+    <div class="page-tag">
+      <span class="online-dot"></span>
+      SYSTEM READY
+    </div>
   </div>
-</section>
+
+  <!-- SEARCH PANEL -->
+  <section class="panel">
+
+    <div class="panel-heading">
+      <div class="panel-icon">⌕</div>
+      <div>
+        <h3>Batch Report Search</h3>
+        <p>Enter your batch number to retrieve laboratory results.</p>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <span class="search-icon">⌕</span>
+        <input
+          class="search-input"
+          id="batchInput"
+          placeholder="Enter Batch Number (e.g. BC26-090568-003)"
+          autocomplete="off"
+        >
+      </div>
+
+      <button
+        class="btn btn-primary"
+        id="searchBtn"
+        onclick="searchBatch()"
+      >
+        <span>⌕</span>
+        SEARCH REPORT
+      </button>
+    </div>
+
+    <div class="status-row">
+      <span class="status-indicator" id="statusIndicator"></span>
+      <span id="status">
+        Enter Batch Number and press ENTER to search.
+      </span>
+    </div>
+
+  </section>
+
+  <!-- ACTION PANEL -->
+  <section class="panel" id="actionPanel">
+
+    <div class="action-heading">
+      <div>
+        <h3>Report Management</h3>
+        <p>Review manual inputs and prepare your laboratory report.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-gray" onclick="openForm()">
+          ✎ EDIT MANUAL INPUT
+        </button>
+
+        <button class="btn btn-green" onclick="window.print()">
+          ⇩ PRINT / SAVE PDF
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- REPORT PREVIEW -->
+  <div id="reportArea">
+
+    <div class="preview-heading">
+      <h3>Laboratory Report Preview</h3>
+      <span>Print format: 5″ × 2″</span>
+    </div>
+
+    <div class="report" id="report">
+
+      <div class="report-header">
+        <div class="report-brand">
+          <h2>OYSHO</h2>
+          <p>FABRIC LABORATORY QUALITY CONTROL</p>
+        </div>
+
+        <div class="report-heading">
+          LABORATORY TEST RESULTS
+          <small>FABRIC TEST REPORT</small>
+        </div>
+      </div>
+
+      <div class="top-info">
+        <div class="top-info-item">
+          <label>Lab Ref.</label>
+          <strong id="labRef">-</strong>
+        </div>
+
+        <div class="top-info-item">
+          <label>Buyer</label>
+          <strong id="buyer">-</strong>
+        </div>
+
+        <div class="top-info-item">
+          <label>Batch</label>
+          <strong id="batch">-</strong>
+        </div>
+
+        <div class="top-info-item">
+          <label>Color</label>
+          <strong id="color">-</strong>
+        </div>
+
+        <div class="top-info-item">
+          <label>Result</label>
+          <strong id="result">-</strong>
+        </div>
+
+        <div class="top-info-item">
+          <label>Fail Parameter</label>
+          <strong id="failParameter">-</strong>
+        </div>
+
+        <div class="top-info-item">
+          <label>Roll No.</label>
+          <strong id="rollNo">-</strong>
+        </div>
+      </div>
+
+      <div class="section-title">LABORATORY TEST RESULTS</div>
+
+      <div class="results-grid">
+
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Result</th>
+              <th>Requirement</th>
+            </tr>
+          </thead>
+          <tbody id="leftTests"></tbody>
+        </table>
+
+        <table class="result-table">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th>Result</th>
+              <th>Requirement</th>
+            </tr>
+          </thead>
+          <tbody id="rightTests"></tbody>
+        </table>
+
+      </div>
+
+      <div class="quality-comments">
+        <b>QUALITY COMMENTS:</b>
+        <span id="reportQualityComments">-</span>
+      </div>
+
+      <div class="bottom-line">
+        <span>
+          Customer Requirements:
+          <b id="customerRequirements">-</b>
+        </span>
+
+        <span>
+          Test Date:
+          <b id="testDate">-</b>
+        </span>
+      </div>
+
+    </div>
+  </div>
+
 </main>
 
-<!-- REPORT EDITOR POPUP -->
-<div class="modal" id="reportModal">
+<footer class="footer">
+  <strong>OYSHO FABRIC LABORATORY</strong>
+  <span> · </span>
+  Quality Control & Laboratory Management System
+</footer>
+
+<!-- MANUAL INPUT MODAL -->
+<div class="modal" id="inputModal">
+
   <div class="modal-box">
+
     <div class="modal-header">
-      <h2>OYSHO | Laboratory Report Editor</h2>
-      <button class="close-btn" onclick="closeReportPopup()">×</button>
+      <div>
+        <h2>Laboratory Report Input</h2>
+        <p>Update manual measurements and quality comments.</p>
+      </div>
+
+      <button
+        class="close-btn"
+        onclick="closeForm()"
+      >×</button>
     </div>
 
     <div class="modal-body">
 
-      <div class="modal-toolbar">
-        <div class="modal-batch">
-          <strong>Batch:</strong> <span id="popupBatch">-</span>
-          <br><span id="popupBuyer"></span>
-        </div>
-        <button class="btn-gray" onclick="resetCurrentEdits()">RESET EDITS</button>
+      <div class="modal-batch">
+        <strong>Batch Number:</strong>
+        <span id="popupBatch">-</span>
+        <br>
+        <span id="popupBuyer"></span>
       </div>
 
-      <section class="editor-panel">
-        <div class="editor-title">REPORT INFORMATION & TEST RESULTS — EDIT HERE</div>
-        <div class="editor-grid" id="editorGrid"></div>
-      </section>
+      <div class="modal-grid">
 
-      <div class="report-wrap">
-        <div class="preview-label">LIVE LABORATORY REPORT PREVIEW · PRINT SIZE 5″ × 2″</div>
-
-        <!-- REPORT -->
-        <div id="reportArea">
-        <div class="report" id="report">
-
-          <div class="report-header">
-            <div class="report-brand">
-              <h2>OYSHO</h2>
-              <p>FABRIC LABORATORY QUALITY CONTROL</p>
-            </div>
-            <div class="report-heading">
-              LABORATORY TEST RESULTS
-              <small>FABRIC TEST REPORT</small>
-            </div>
-          </div>
-
-          <div class="top-info">
-            <div class="top-info-item"><label>Lab Ref.</label><strong id="labRef">-</strong></div>
-            <div class="top-info-item"><label>Buyer</label><strong id="buyer">-</strong></div>
-            <div class="top-info-item"><label>Batch</label><strong id="batch">-</strong></div>
-            <div class="top-info-item"><label>Color</label><strong id="color">-</strong></div>
-            <div class="top-info-item"><label>Result</label><strong id="result">-</strong></div>
-            <div class="top-info-item"><label>Fail Parameter</label><strong id="failParameter">-</strong></div>
-            <div class="top-info-item"><label>Roll No.</label><strong id="rollNo">-</strong></div>
-          </div>
-
-          <div class="section-title">LABORATORY TEST RESULTS</div>
-
-          <div class="results-grid">
-            <table class="result-table">
-              <thead><tr><th>Test</th><th>Result</th><th>Requirement</th></tr></thead>
-              <tbody id="leftTests"></tbody>
-            </table>
-            <table class="result-table">
-              <thead><tr><th>Test</th><th>Result</th><th>Requirement</th></tr></thead>
-              <tbody id="rightTests"></tbody>
-            </table>
-          </div>
-
-          <div class="quality-comments">
-            <b>QUALITY COMMENTS:</b>
-            <span id="reportQualityComments">-</span>
-          </div>
-
-          <div class="bottom-line">
-            <span>Customer Requirements: <b id="customerRequirements">-</b></span>
-            <span>Test Date: <b id="testDate">-</b></span>
-          </div>
-
+        <div class="modal-field">
+          <label>ACTUAL GSM</label>
+          <input
+            id="actualGSM"
+            placeholder="Enter Actual GSM"
+          >
         </div>
+
+        <div class="modal-field">
+          <label>AVG GSM</label>
+          <input
+            id="avgGSM"
+            placeholder="Enter AVG GSM"
+          >
         </div>
+
+        <div class="modal-field">
+          <label>ACTUAL DIA</label>
+          <input
+            id="actualDia"
+            placeholder="Enter Actual Dia"
+          >
+        </div>
+
+        <div class="modal-field">
+          <label>QUALITY COMMENTS</label>
+          <textarea
+            id="qualityComments"
+            placeholder="Enter Quality Comments here..."
+          ></textarea>
+        </div>
+
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-gray" onclick="closeReportPopup()">CLOSE</button>
-        <button class="btn-green" onclick="updateReport()">UPDATE REPORT</button>
-        <button class="btn-dark" onclick="printReport()">PRINT / SAVE PDF</button>
+      <div class="modal-actions">
+        <button class="btn btn-gray" onclick="closeForm()">
+          CANCEL
+        </button>
+
+        <button class="btn btn-primary" onclick="saveManualInput()">
+          ✓ UPDATE REPORT
+        </button>
       </div>
 
     </div>
@@ -366,367 +1075,407 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <script>
 "use strict";
 
-const API="https://oysho-lab-report.support446-ff6.workers.dev/";
+const API =
+  "https://oysho-lab-report.support446-ff6.workers.dev/";
 
-let currentData=null;
-let activeRequest=null;
-let reportEdits={};
-let originalEdits={};
+let currentData = null;
+let activeRequest = null;
 
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-function clean(value){
-  if(value===null||value===undefined||String(value).trim()==="")return "-";
+/* CLEAN VALUE */
+
+function clean(value) {
+  if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
+    return "-";
+  }
+
   return String(value).trim();
 }
 
-function esc(value){
-  return String(value??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+/* HTML ESCAPE */
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
   }[c]));
 }
 
-const LEFT_TESTS=[
-  {name:"C/F to washing",key:"C/F to washing",requirement:"3-4"},
-  {name:"C/F to water",key:"C/F to water",requirement:"3"},
-  {name:"CF To Dry Rub",key:"CF To Dry Rub",requirement:"3"},
-  {name:"CF To Wet Rub",key:"CF To Wet Rub",requirement:"3"},
-  {name:"CF to Per.(Acid)",key:"CF to Perspiration (Acid)",requirement:"3"},
-  {name:"CF to Per.(Alkali)",key:"CF to Perspiration (Alkali)",requirement:"3"},
-  {name:"Pilling - Martindale",key:"Pilling - Martindale",requirement:"3-4"},
-  {name:"Bursting strength",key:"Bursting strength",requirement:"250"},
-  {name:"pH",key:"pH",requirement:"4.5 to 7.5"}
-];
+/* STATUS DISPLAY */
 
-const RIGHT_TESTS=[
-  {name:"DS Length",key:"DS Length",requirement:"+0.0% to -3.0%"},
-  {name:"DS Width",key:"DS Width",requirement:"+0.0% to -3.0%"},
-  {name:"SP",key:"SP",requirement:"3"},
-  {name:"Required GSM",meta:"Required GSM",requirement:"+/-10.0 grs/m2"},
-  {name:"Actual GSM",manual:"actualGSM",requirement:""},
-  {name:"AVG GSM",manual:"avgGSM",requirement:""},
-  {name:"Required Dia",meta:"Required Dia",requirement:"(+/-3.0%)"},
-  {name:"Actual Dia",manual:"actualDia",requirement:""},
-  {name:"Recovery",key:"Recovery",requirement:"-"}
-];
+function setStatus(message, type = "normal") {
+  $("status").textContent = message;
 
-const INFO_FIELDS=[
-  {id:"labRef",label:"Lab Reference",source:"report",key:"Lab Reference No"},
-  {id:"buyer",label:"Buyer",source:"report",key:"Buyer"},
-  {id:"batch",label:"Batch",source:"report",key:"Batch No"},
-  {id:"color",label:"Color",source:"report",key:"Color"},
-  {id:"result",label:"Result (Pass / Fail)",source:"report",key:"Pass/Fail"},
-  {id:"failParameter",label:"Fail Parameter",source:"report",key:"Fail Parameter"},
-  {id:"rollNo",label:"Roll No.",source:"report",key:"Roll No"}
-];
+  const indicator = $("statusIndicator");
 
-function getBaseValue(field){
-  if(field.manual)return currentData.manual?.[field.manual]??"";
-  if(field.meta)return currentData.report[field.meta]??"";
-  return currentData.tests[field.key]??"";
+  indicator.className = "status-indicator";
+
+  if (type === "success") {
+    indicator.classList.add("active");
+  }
+
+  if (type === "loading") {
+    indicator.classList.add("loading");
+  }
 }
 
-function getValue(id,base){
-  return Object.prototype.hasOwnProperty.call(reportEdits,id)
-    ? reportEdits[id]
-    : clean(base);
+/* LEFT TESTS */
+
+const LEFT_TESTS = [
+  {
+    name: "C/F to washing",
+    key: "C/F to washing",
+    requirement: "3-4"
+  },
+  {
+    name: "C/F to water",
+    key: "C/F to water",
+    requirement: "3"
+  },
+  {
+    name: "CF To Dry Rub",
+    key: "CF To Dry Rub",
+    requirement: "3"
+  },
+  {
+    name: "CF To Wet Rub",
+    key: "CF To Wet Rub",
+    requirement: "3"
+  },
+  {
+    name: "CF to Per.(Acid)",
+    key: "CF to Perspiration (Acid)",
+    requirement: "3"
+  },
+  {
+    name: "CF to Per.(Alkali)",
+    key: "CF to Perspiration (Alkali)",
+    requirement: "3"
+  },
+  {
+    name: "Pilling - Martindale",
+    key: "Pilling - Martindale",
+    requirement: "3-4"
+  },
+  {
+    name: "Bursting strength",
+    key: "Bursting strength",
+    requirement: "250"
+  },
+  {
+    name: "pH",
+    key: "pH",
+    requirement: "4.5 to 7.5"
+  }
+];
+
+/* RIGHT TESTS */
+
+const RIGHT_TESTS = [
+  {
+    name: "DS Length",
+    key: "DS Length",
+    requirement: "+0.0% to -3.0%"
+  },
+  {
+    name: "DS Width",
+    key: "DS Width",
+    requirement: "+0.0% to -3.0%"
+  },
+  {
+    name: "SP",
+    key: "SP",
+    requirement: "3"
+  },
+  {
+    name: "Required GSM",
+    meta: "Required GSM",
+    requirement: "+/-10.0 grs/m2"
+  },
+  {
+    name: "Actual GSM",
+    manual: "actualGSM",
+    requirement: ""
+  },
+  {
+    name: "AVG GSM",
+    manual: "avgGSM",
+    requirement: ""
+  },
+  {
+    name: "Required Dia",
+    meta: "Required Dia",
+    requirement: "(+/-3.0%)"
+  },
+  {
+    name: "Actual Dia",
+    manual: "actualDia",
+    requirement: ""
+  },
+  {
+    name: "Recovery",
+    key: "Recovery",
+    requirement: "-"
+  }
+];
+
+/* GET RESULT */
+
+function getTestResult(test) {
+  if (test.manual) {
+    return $(test.manual).value.trim() || "-";
+  }
+
+  if (test.meta) {
+    return clean(currentData.report[test.meta]);
+  }
+
+  return clean(currentData.tests[test.key]);
 }
 
-function allEditableFields(){
-  const fields=[];
+/* RENDER TABLE */
 
-  INFO_FIELDS.forEach(f=>fields.push({
-    id:f.id,label:f.label,base:currentData.report[f.key]??""
-  }));
+function renderTable(list, target) {
+  $(target).innerHTML = list.map(test => {
+    const value = getTestResult(test);
 
-  LEFT_TESTS.forEach((f,i)=>{
-    fields.push({
-      id:"left_"+i,label:f.name+" — Result",
-      base:currentData.tests[f.key]??""
-    });
-    fields.push({
-      id:"left_req_"+i,label:f.name+" — Requirement",
-      base:f.requirement
-    });
-  });
-
-  RIGHT_TESTS.forEach((f,i)=>{
-    fields.push({
-      id:"right_"+i,label:f.name+" — Result",
-      base:f.manual
-        ? (currentData.manual?.[f.manual]??"")
-        : f.meta
-          ? (currentData.report[f.meta]??"")
-          : (currentData.tests[f.key]??"")
-    });
-    fields.push({
-      id:"right_req_"+i,label:f.name+" — Requirement",
-      base:f.requirement
-    });
-  });
-
-  fields.push({
-    id:"customerRequirements",
-    label:"Customer Requirements",
-    base:currentData.report["Customer Requirements"]??""
-  });
-  fields.push({
-    id:"testDate",
-    label:"Test Date",
-    base:currentData.report["In Date & Time"]??""
-  });
-  fields.push({
-    id:"qualityComments",
-    label:"Quality Comments",
-    base:""
-  });
-
-  return fields;
-}
-
-function buildEditor(){
-  if(!currentData)return;
-
-  const fields=allEditableFields();
-
-  $("editorGrid").innerHTML=fields.map(f=>{
-    const value=getValue(f.id,f.base);
-    const isComment=f.id==="qualityComments";
     return `
-      <div class="field ${isComment?"wide":""}">
-        <label for="edit_${esc(f.id)}">${esc(f.label)}</label>
-        ${isComment
-          ? `<textarea id="edit_${esc(f.id)}" data-edit-id="${esc(f.id)}"
-                placeholder="Enter Quality Comments">${esc(value==="-"?"":value)}</textarea>`
-          : `<input id="edit_${esc(f.id)}" data-edit-id="${esc(f.id)}"
-                value="${esc(value==="-"?"":value)}">`
-        }
-      </div>
+      <tr>
+        <td>${esc(test.name)}</td>
+        <td>${esc(value)}</td>
+        <td>${esc(test.requirement || "-")}</td>
+      </tr>
     `;
   }).join("");
-
-  $("editorGrid").querySelectorAll("[data-edit-id]").forEach(input=>{
-    input.addEventListener("input",()=>{
-      const id=input.dataset.editId;
-      reportEdits[id]=input.value;
-      renderReport();
-    });
-  });
 }
 
-function fieldValue(id,base){
-  return getValue(id,base);
-}
+/* SEARCH BATCH */
 
-function renderTable(list,target,side){
-  $(target).innerHTML=list.map((test,i)=>{
-    const resultId=side+"_"+i;
-    const reqId=side+"_req_"+i;
-    let base;
+async function searchBatch() {
+  const batchNumber = $("batchInput").value.trim();
 
-    if(test.manual){
-      base=currentData.manual?.[test.manual]??"";
-    }else if(test.meta){
-      base=currentData.report[test.meta]??"";
-    }else{
-      base=currentData.tests[test.key]??"";
-    }
-
-    const value=fieldValue(resultId,base);
-    const requirement=fieldValue(reqId,test.requirement);
-
-    return `<tr>
-      <td>${esc(test.name)}</td>
-      <td>${esc(clean(value))}</td>
-      <td>${esc(clean(requirement))}</td>
-    </tr>`;
-  }).join("");
-}
-
-function renderReport(){
-  if(!currentData)return;
-
-  INFO_FIELDS.forEach(f=>{
-    $(f.id).textContent=clean(
-      fieldValue(f.id,currentData.report[f.key]??"")
-    );
-  });
-
-  const resultValue=clean($("result").textContent);
-  $("result").className=
-    resultValue.toUpperCase()==="PASS"?"pass":
-    resultValue.toUpperCase()==="FAIL"?"fail":"";
-
-  renderTable(LEFT_TESTS,"leftTests","left");
-  renderTable(RIGHT_TESTS,"rightTests","right");
-
-  $("customerRequirements").textContent=clean(
-    fieldValue("customerRequirements",
-      currentData.report["Customer Requirements"]??"")
-  );
-
-  $("testDate").textContent=clean(
-    fieldValue("testDate",
-      currentData.report["In Date & Time"]??"")
-  );
-
-  $("reportQualityComments").textContent=clean(
-    fieldValue("qualityComments","")
-  );
-}
-
-function captureEditorValues(){
-  $("editorGrid").querySelectorAll("[data-edit-id]").forEach(input=>{
-    reportEdits[input.dataset.editId]=input.value;
-  });
-}
-
-function updateReport(){
-  if(!currentData)return;
-
-  captureEditorValues();
-  renderReport();
-  buildEditor();
-
-  $("status").textContent=
-    "Report updated successfully. Changes are temporary and not saved to Google Sheet.";
-}
-
-function resetCurrentEdits(){
-  if(!currentData)return;
-
-  if(!confirm("Reset all edits for this report?"))return;
-
-  reportEdits={};
-  buildEditor();
-  renderReport();
-
-  $("status").textContent="All temporary report edits have been reset.";
-}
-
-function openReportPopup(){
-  if(!currentData)return;
-  buildEditor();
-  renderReport();
-  $("reportModal").classList.add("show");
-  document.body.style.overflow="hidden";
-}
-
-function closeReportPopup(){
-  captureEditorValues();
-  $("reportModal").classList.remove("show");
-  document.body.style.overflow="";
-}
-
-function printReport(){
-  if(!currentData)return;
-
-  captureEditorValues();
-  renderReport();
-
-  $("reportModal").classList.remove("show");
-  document.body.style.overflow="";
-
-  window.print();
-
-  setTimeout(()=>{
-    if(currentData)openReportPopup();
-  },500);
-}
-
-async function searchBatch(){
-  const batchNumber=$("batchInput").value.trim();
-
-  if(!batchNumber){
-    $("status").textContent="Please enter Batch Number.";
+  if (!batchNumber) {
+    setStatus("Please enter Batch Number.");
     $("batchInput").focus();
     return;
   }
 
-  if(activeRequest)activeRequest.abort();
-  activeRequest=new AbortController();
-  const requestController=activeRequest;
+  if (activeRequest) {
+    activeRequest.abort();
+  }
 
-  $("searchBtn").disabled=true;
-  $("status").textContent="Loading latest laboratory results...";
+  activeRequest = new AbortController();
 
-  try{
-    const response=await fetch(
-      API+"?batch="+encodeURIComponent(batchNumber),
+  const requestController = activeRequest;
+
+  $("searchBtn").disabled = true;
+  $("searchBtn").innerHTML = "◌ SEARCHING...";
+
+  setStatus("Retrieving latest laboratory results...", "loading");
+
+  try {
+    const response = await fetch(
+      API + "?batch=" + encodeURIComponent(batchNumber),
       {
-        method:"GET",
-        cache:"no-store",
-        signal:requestController.signal
+        method: "GET",
+        cache: "no-store",
+        signal: requestController.signal
       }
     );
 
     let data;
-    try{data=await response.json()}
-    catch{throw new Error("Invalid API response.")}
 
-    if(!response.ok||!data.success){
-      throw new Error(data.message||"Batch not found.");
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Invalid API response.");
     }
 
-    if(!data.report||!data.tests){
-      throw new Error("Invalid report data received from API.");
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.message || "Batch not found."
+      );
     }
 
-    currentData=data;
+    if (!data.report || !data.tests) {
+      throw new Error(
+        "Invalid report data received from API."
+      );
+    }
 
-    // New batch means old temporary edits are discarded.
-    reportEdits={};
+    currentData = data;
 
-    $("popupBatch").textContent=clean(data.report["Batch No"]);
-    $("popupBuyer").textContent="Buyer: "+clean(data.report["Buyer"]);
+    /* RESET MANUAL INPUTS */
 
-    $("actionPanel").style.display="block";
-    $("reportArea").style.display="block";
+    $("actualGSM").value = "";
+    $("avgGSM").value = "";
+    $("actualDia").value = "";
+    $("qualityComments").value = "";
 
-    buildEditor();
-    renderReport();
+    /* POPUP DETAILS */
 
-    $("status").textContent=
-      "Report loaded successfully. Records found: "+data.recordsFound;
+    $("popupBatch").textContent =
+      clean(data.report["Batch No"]);
 
-    openReportPopup();
+    $("popupBuyer").textContent =
+      "Buyer: " + clean(data.report["Buyer"]);
 
-  }catch(error){
-    if(error.name==="AbortError")return;
+    /* SHOW REPORT */
 
-    currentData=null;
-    reportEdits={};
+    $("actionPanel").style.display = "block";
+    $("reportArea").style.display = "block";
 
-    $("actionPanel").style.display="none";
-    $("reportArea").style.display="none";
-    closeReportPopup();
+    updateReport();
 
-    $("status").textContent="Error: "+error.message;
+    setStatus(
+      "Report loaded successfully. Records found: " +
+      data.recordsFound,
+      "success"
+    );
 
-  }finally{
-    if(activeRequest===requestController){
-      activeRequest=null;
-      $("searchBtn").disabled=false;
+    openForm();
+
+  } catch (error) {
+    if (error.name === "AbortError") {
+      return;
+    }
+
+    currentData = null;
+
+    $("actionPanel").style.display = "none";
+    $("reportArea").style.display = "none";
+
+    closeForm();
+
+    setStatus("Error: " + error.message);
+
+  } finally {
+    if (activeRequest === requestController) {
+      activeRequest = null;
+      $("searchBtn").disabled = false;
+      $("searchBtn").innerHTML = "⌕ SEARCH REPORT";
     }
   }
 }
 
-$("batchInput").addEventListener("keydown",event=>{
-  if(event.key==="Enter"){
+/* OPEN FORM */
+
+function openForm() {
+  if (!currentData) return;
+
+  $("inputModal").classList.add("show");
+}
+
+/* CLOSE FORM */
+
+function closeForm() {
+  $("inputModal").classList.remove("show");
+}
+
+/* SAVE MANUAL INPUT */
+
+function saveManualInput() {
+  if (!currentData) return;
+
+  updateReport();
+
+  closeForm();
+
+  setStatus(
+    "Manual input updated successfully. Report is ready to print.",
+    "success"
+  );
+}
+
+/* UPDATE REPORT */
+
+function updateReport() {
+  if (!currentData) return;
+
+  const r = currentData.report;
+
+  $("labRef").textContent =
+    clean(r["Lab Reference No"]);
+
+  $("buyer").textContent =
+    clean(r["Buyer"]);
+
+  $("batch").textContent =
+    clean(r["Batch No"]);
+
+  $("color").textContent =
+    clean(r["Color"]);
+
+  $("failParameter").textContent =
+    clean(r["Fail Parameter"]);
+
+  $("rollNo").textContent =
+    clean(r["Roll No"]);
+
+  /* PASS / FAIL */
+
+  const resultValue = clean(r["Pass/Fail"]);
+
+  $("result").textContent = resultValue;
+
+  $("result").className =
+    resultValue.toUpperCase() === "PASS"
+      ? "pass"
+      : resultValue.toUpperCase() === "FAIL"
+        ? "fail"
+        : "";
+
+  /* TEST TABLES */
+
+  renderTable(LEFT_TESTS, "leftTests");
+  renderTable(RIGHT_TESTS, "rightTests");
+
+  /* QUALITY COMMENTS */
+
+  $("reportQualityComments").textContent =
+    $("qualityComments").value.trim() || "-";
+
+  /* CUSTOMER REQUIREMENTS */
+
+  $("customerRequirements").textContent =
+    clean(r["Customer Requirements"]);
+
+  /* TEST DATE */
+
+  $("testDate").textContent =
+    clean(r["In Date & Time"]);
+}
+
+/* ENTER TO SEARCH */
+
+$("batchInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
     event.preventDefault();
     searchBatch();
   }
 });
 
-$("reportModal").addEventListener("click",event=>{
-  if(event.target===$("reportModal")){
-    closeReportPopup();
+/* CLOSE POPUP OUTSIDE CLICK */
+
+$("inputModal").addEventListener("click", event => {
+  if (event.target === $("inputModal")) {
+    closeForm();
   }
 });
 
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"&&$("reportModal").classList.contains("show")){
-    closeReportPopup();
+/* ESCAPE KEY */
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeForm();
   }
 });
 </script>
